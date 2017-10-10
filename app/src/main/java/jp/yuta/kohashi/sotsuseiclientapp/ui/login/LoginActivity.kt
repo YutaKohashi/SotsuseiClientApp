@@ -1,8 +1,12 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.login
 
+import android.app.Activity
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.view.View
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
+import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
+import jp.yuta.kohashi.sotsuseiclientapp.ui.home.HomeActivity
 
 /**
  * Author : yutakohashi
@@ -11,23 +15,14 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
  */
 
  class LoginActivity:BaseActivity(){
+
+    companion object :StartActivity<LoginActivity>
+
+    override val fragment: Fragment?
+        get() = LoginFragment()
+
     override fun setEvent() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
-
-    override fun setFragment(): Fragment? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setContentViewFromRes(): Int? {
-        val bool:Boolean = true
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setContentViewFromView(): View? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
 
 }

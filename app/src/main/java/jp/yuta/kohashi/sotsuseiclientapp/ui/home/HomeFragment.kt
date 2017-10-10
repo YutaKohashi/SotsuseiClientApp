@@ -1,5 +1,6 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.home
 
+import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 
 /**
@@ -9,8 +10,13 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
  */
 
 class HomeFragment:BaseFragment(){
-    override fun RES_LAYOUT(): Int {
+
+    override val sLayoutRes: Int
+        get() = R.layout.fragment_home
+
+    override fun setEvent() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
 
 }

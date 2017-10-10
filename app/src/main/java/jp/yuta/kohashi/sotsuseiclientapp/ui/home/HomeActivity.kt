@@ -3,6 +3,7 @@ package jp.yuta.kohashi.sotsuseiclientapp.ui.home
 import android.support.v4.app.Fragment
 import android.view.View
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
+import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
 
 /**
  * Author : yutakohashi
@@ -12,9 +13,13 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
 
 class HomeActivity:BaseActivity(){
 
-    override fun setFragment(): Fragment?  = HomeFragment()
 
-    override fun setContentViewFromRes(): Int?  = null
-    override fun setContentViewFromView(): View? = null
+    companion object :StartActivity<HomeActivity>{
 
+    }
+
+    override fun setEvent() {
+
+
+    }
 }
