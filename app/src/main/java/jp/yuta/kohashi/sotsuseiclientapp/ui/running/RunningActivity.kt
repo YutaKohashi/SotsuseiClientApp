@@ -11,17 +11,9 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
  */
 
 class RunningActivity:BaseActivity(){
-    override fun setFragment(): Fragment? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
-    override fun setContentViewFromRes(): Int? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setContentViewFromView(): View? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override val fragment: Fragment?
+        get() = RunningFragment()
 
     override fun setEvent() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.support.annotation.LayoutRes
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
+import jp.yuta.kohashi.sotsuseiclientapp.ui.home.HomeActivity
+import kotlinx.android.synthetic.main.fragment_login.*
 
 /**
  * Author : yutakohashi
@@ -22,7 +24,9 @@ class LoginFragment:BaseFragment(){
     }
 
     override fun setEvent() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        loginButton.setOnClickListener {
+            HomeActivity.start(activity)
+        }
     }
 
 }

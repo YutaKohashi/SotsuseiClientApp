@@ -2,6 +2,7 @@ package jp.yuta.kohashi.sotsuseiclientapp
 
 import android.app.Application
 import android.content.Context
+import jp.yuta.kohashi.sotsuseiclientapp.netowork.ShutterImgHelper
 import jp.yuta.kohashi.sotsuseiclientapp.utils.PrefUtil
 
 /**
@@ -16,6 +17,7 @@ class App : Application() {
         context = applicationContext
 
         PrefUtil.setUp(context)
+        ShutterImgHelper.init()
     }
 
     companion object {
