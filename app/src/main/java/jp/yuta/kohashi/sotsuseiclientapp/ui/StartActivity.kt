@@ -1,17 +1,19 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui
 
 import android.app.Activity
-import android.content.Intent
 
 /**
  * Author : yutakohashi
  * Project name : SotsuseiClientApp
  * Date : 09 / 10 / 2017
  */
-interface StartActivity<T: Any> {
+interface StartActivity{
+    /**
+     *  ex.
+     *   companion object : StartActivity {
+     *       override fun start(activity: Activity)  = activity.startActivity(Intent(activity,RunningActivity::class.java))
+     *   }
+     */
+    fun start(activity: Activity)
 
-    fun start(activity: Activity){
-        val class = 
-        activity.startActivity(Intent(activity,(this as java.lang.Object).`class` as Class<T>))
-    }
 }

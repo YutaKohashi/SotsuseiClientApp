@@ -19,14 +19,14 @@ object ResUtil{
      * @param id
      * @return
      */
-    fun getString(@StringRes id: Int): String =  App.context.resources.getString(id)
+    fun string(@StringRes id: Int): String =  App.context.resources.getString(id)
 
     /**
      * Drawableリソース取得
      * @param id
      * @return
      */
-    fun getDrawable(@DrawableRes id: Int): Drawable {
+    fun drawable(@DrawableRes id: Int): Drawable {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
              App.context.resources.getDrawable(id, null)
         else
@@ -38,7 +38,7 @@ object ResUtil{
      * @param id
      * @return
      */
-    fun getColor(@ColorRes id: Int): Int {
+    fun color(@ColorRes id: Int): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
              App.context.resources.getColor(id, null)
         else

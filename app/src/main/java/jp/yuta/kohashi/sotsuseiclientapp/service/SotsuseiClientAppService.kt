@@ -1,11 +1,9 @@
 package jp.yuta.kohashi.sotsuseiclientapp.service
 
 import android.app.Service
-import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
-import android.support.v4.media.session.MediaButtonReceiver
 import android.util.Log
 import jp.yuta.kohashi.sotsuseiclientapp.receiver.MediaControlReceiver
 
@@ -16,7 +14,7 @@ import jp.yuta.kohashi.sotsuseiclientapp.receiver.MediaControlReceiver
  * Date : 27 / 09 / 2017
  */
 
-class SotsuseiClientAppService : Service() {
+class SotsuseiClientAppService : BaseService() {
     private val TAG = SotsuseiClientAppService.javaClass.simpleName
 
     /**
@@ -32,8 +30,9 @@ class SotsuseiClientAppService : Service() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(TAG, "onStartCommand")
         sBroadcastReceiver = MediaControlReceiver(invokeAction)
-        registerReceiver(sBroadcastReceiver, IntentFilter().apply { addAction(Intent.ACTION_MEDIA_BUTTON) })
+        registerReceiver(sBroadcastReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF))
 
         return super.onStartCommand(intent, flags, startId)
     }

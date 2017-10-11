@@ -13,13 +13,13 @@ import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 
 object ToastHelper {
 
-    fun alreadyRunningService() = show(ResUtil.getString(R.string.already_running_servce))
+    fun alreadyRunningService() = show(ResUtil.string(R.string.already_running_servce))
 
-    fun runService() = show(ResUtil.getString(R.string.success_runnning_service))
+    fun runService() = show(ResUtil.string(R.string.success_runnning_service))
 
-    fun stopService() = show(ResUtil.getString(R.string.success_stop_servivce))
+    fun stopService() = show(ResUtil.string(R.string.success_stop_servivce))
 
-    fun alreadyStopService() = show(ResUtil.getString(R.string.already_stop_service))
+    fun alreadyStopService() = show(ResUtil.string(R.string.already_stop_service))
 
     fun show(text: String) {
         Toast.makeText(App.context, text, Toast.LENGTH_SHORT).show()

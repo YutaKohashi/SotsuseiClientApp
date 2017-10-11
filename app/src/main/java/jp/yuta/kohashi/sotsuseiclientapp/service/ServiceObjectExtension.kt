@@ -11,26 +11,27 @@ import jp.yuta.kohashi.sotsuseiclientapp.App
  * Date : 10 / 10 / 2017
  */
 
-interface ServiceObjectExtension<T : Any> {
+interface ServiceObjectExtension<T : BaseService> {
     
-    private fun javaClass():Class<T> = ((this as Object).`class` as Class<T>)
+//    private fun javaClass():Class<T> = ((this as Object).`class` as Class<T>)
     
     /**
      * サービスが起動しているか
      */
-    fun isRunning(): Boolean {
+    fun isRunning(clazz:Class<T>): Boolean {
         val am = App.context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val listServiceInfo = am.getRunningServices(Integer.MAX_VALUE)
-        return listServiceInfo.any { it.service.className == javaClass().name }
+        val name:String = clazz.name
+        return listServiceInfo.any { it.service.className == clazz.name }
     }
 
     /**
      * サービス起動
      * 戻り値は起動に成功かすでに起動しているか
      */
-    fun start(): StateResult {
-        return if (isRunning()) {
-            App.context.startService(Intent(App.context, javaClass().javaClass))
+    fun start(clazz:Class<T>): StateResult {
+        return if (!isRunning(clazz)) {
+            App.context.startService(Intent(App.context, clazz))
             StateResult.SUCCESS_RUN
         } else {
             StateResult.ALREADY_RUNNING
@@ -41,9 +42,9 @@ interface ServiceObjectExtension<T : Any> {
      * サービス停止
      * 戻り値はすでにに停止しているかどうか
      */
-    fun stop(): StateResult {
-        return if (isRunning()) {
-            App.context.stopService(Intent(App.context, javaClass().javaClass))
+    fun stop(clazz:Class<T>): StateResult {
+        return if (isRunning(clazz)) {
+            App.context.stopService(Intent(App.context, clazz))
             StateResult.SUCCESS_STOP
         } else {
             StateResult.ALREADY_STOPPED

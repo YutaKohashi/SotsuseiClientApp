@@ -1,5 +1,7 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.login
 
+import android.app.Activity
+import android.content.Intent
 import android.support.v4.app.Fragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
@@ -12,7 +14,10 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
 
  class LoginActivity:BaseActivity(){
 
-    companion object :StartActivity<LoginActivity>
+    companion object :StartActivity {
+        override fun start(activity: Activity)  = activity.startActivity(Intent(activity,LoginActivity::class.java))
+    }
+
 
     override val fragment: Fragment?
         get() = LoginFragment()

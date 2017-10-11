@@ -11,9 +11,7 @@ import android.widget.FrameLayout
 /**
  * Activityを作る際は必ず継承してください
  */
-abstract open class BaseActivity : AppCompatActivity() {
-
-
+abstract class BaseActivity : AppCompatActivity() {
 
     /**
      * フラグメントを設置するとき
@@ -52,6 +50,5 @@ abstract open class BaseActivity : AppCompatActivity() {
      * ボタンのクリック処理などを中心に記述
      */
     abstract fun setEvent()
-
 
 }

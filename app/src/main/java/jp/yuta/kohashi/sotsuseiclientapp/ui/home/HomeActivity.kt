@@ -1,9 +1,10 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.home
 
+import android.app.Activity
+import android.content.Intent
 import android.support.v4.app.Fragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
-import jp.yuta.kohashi.sotsuseiclientapp.ui.login.LoginFragment
 
 /**
  * Author : yutakohashi
@@ -11,12 +12,13 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.login.LoginFragment
  * Date : 29 / 09 / 2017
  */
 
-class HomeActivity:BaseActivity(){
+class HomeActivity : BaseActivity() {
 
 
-    companion object :StartActivity<HomeActivity>{
-
+    companion object : StartActivity {
+        override fun start(activity: Activity) = activity.startActivity(Intent(activity, HomeActivity::class.java))
     }
+
     override val fragment: Fragment?
         get() = HomeFragment()
 

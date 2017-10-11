@@ -37,7 +37,7 @@ class RunningFragment: BaseFragment(){
          * ストップボタン
          */
         stopButton.setOnClickListener {
-            when(SotsuseiClientAppService.stop()){
+            when(SotsuseiClientAppService.stop(SotsuseiClientAppService::class.java)){
                 StateResult.SUCCESS_STOP -> ToastHelper.stopService()
                 StateResult.ALREADY_STOPPED -> ToastHelper.alreadyStopService()
             }

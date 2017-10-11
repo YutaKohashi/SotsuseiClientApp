@@ -22,6 +22,8 @@
 
         <activity android:name=".ui.running.RunningActivity"/>
         <activity android:name=".ui.home.HomeActivity"/>
+
+        <service android:name=".service.SotsuseiClientAppService"/>
     </application>
 
 </manifest>
