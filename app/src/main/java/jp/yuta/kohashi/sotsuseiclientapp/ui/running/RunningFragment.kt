@@ -1,7 +1,10 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.running
 
 import jp.yuta.kohashi.sotsuseiclientapp.R
+import jp.yuta.kohashi.sotsuseiclientapp.service.ServiceStateResult
+import jp.yuta.kohashi.sotsuseiclientapp.service.SotsuseiClientAppService
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
+import jp.yuta.kohashi.sotsuseiclientapp.ui.ToastHelper
 import kotlinx.android.synthetic.main.fragment_running.*
 
 /**
@@ -34,7 +37,10 @@ class RunningFragment: BaseFragment(){
          * ストップボタン
          */
         stopButton.setOnClickListener {
-
+            when(SotsuseiClientAppService.stop()){
+                ServiceStateResult.SUCCESS_STOP -> ToastHelper.stopService()
+                ServiceStateResult.ALREADY_STOPPED -> ToastHelper.alreadyStopService()
+            }
         }
 
 
