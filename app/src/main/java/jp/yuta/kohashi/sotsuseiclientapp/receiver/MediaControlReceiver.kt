@@ -12,9 +12,10 @@ import android.view.KeyEvent
  * Project name : SotsuseiClientApp
  * Date : 27 / 09 / 2017
  */
-class MediaControlReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
+class MediaControlReceiver(action:() -> Unit) : BroadcastReceiver() {
+    private val action = action
 
+    override fun onReceive(context: Context, intent: Intent) {
 
         if (Intent.ACTION_MEDIA_BUTTON == intent.action) {
             val event = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_KEY_EVENT) as KeyEvent
@@ -23,8 +24,7 @@ class MediaControlReceiver : BroadcastReceiver() {
                 KeyEvent.KEYCODE_VOLUME_UP,
                 KeyEvent.KEYCODE_VOLUME_MUTE -> {
                     //　押下処理
-
-
+                    action.invoke()
                 }
             }
         }
