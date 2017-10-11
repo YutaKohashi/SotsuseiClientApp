@@ -39,6 +39,8 @@ abstract open class BaseActivity : AppCompatActivity() {
         contentViewFromView?.let { setContentView(it) }
         fragment?.let {
             val rootView = FrameLayout(this)
+            // TODO IDの重複を避ける
+            rootView.id = 0x0001
             rootView.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             setContentView(rootView)
             supportFragmentManager.beginTransaction().apply { add(rootView.id, it) }.commit()

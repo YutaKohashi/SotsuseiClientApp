@@ -2,9 +2,10 @@ package jp.yuta.kohashi.sotsuseiclientapp.ui.running
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import jp.yuta.kohashi.sotsuseiclientapp.service.ServiceStateResult
 import jp.yuta.kohashi.sotsuseiclientapp.service.SotsuseiClientAppService
+import jp.yuta.kohashi.sotsuseiclientapp.service.StateResult
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
+import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.ToastHelper
 
 /**
@@ -14,14 +15,17 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.ToastHelper
  */
 class RunningActivity : BaseActivity() {
 
+    companion object :StartActivity<RunningActivity>
+
     override val fragment: Fragment?
         get() = RunningFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         when (SotsuseiClientAppService.start()) {
-            ServiceStateResult.ALREADY_RUNNING -> ToastHelper.alreadyRunningService()
-            ServiceStateResult.SUCCESS_RUN -> ToastHelper.runService()
+            StateResult.ALREADY_RUNNING -> ToastHelper.alreadyRunningService()
+            StateResult.SUCCESS_RUN -> ToastHelper.runService()
         }
     }
 

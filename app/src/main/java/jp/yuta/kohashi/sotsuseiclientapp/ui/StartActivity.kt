@@ -11,6 +11,7 @@ import android.content.Intent
 interface StartActivity<T: Any> {
 
     fun start(activity: Activity){
+        val class = 
         activity.startActivity(Intent(activity,(this as java.lang.Object).`class` as Class<T>))
     }
 }
