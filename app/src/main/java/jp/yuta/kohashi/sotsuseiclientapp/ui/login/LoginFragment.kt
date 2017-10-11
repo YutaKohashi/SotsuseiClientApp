@@ -1,7 +1,6 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.login
 
 import android.os.Bundle
-import android.support.annotation.LayoutRes
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.home.HomeActivity

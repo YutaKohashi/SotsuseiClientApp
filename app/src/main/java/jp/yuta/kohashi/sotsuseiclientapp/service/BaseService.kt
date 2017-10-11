@@ -1,7 +1,5 @@
 package jp.yuta.kohashi.sotsuseiclientapp.service
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent

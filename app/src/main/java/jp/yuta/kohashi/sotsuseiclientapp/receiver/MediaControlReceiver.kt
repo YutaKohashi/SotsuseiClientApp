@@ -1,9 +1,8 @@
 package jp.yuta.kohashi.sotsuseiclientapp.receiver
 
-import android.view.KeyEvent.KEYCODE_MEDIA_PLAY
-import android.content.Intent
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import android.os.Parcelable
 import android.view.KeyEvent
 
