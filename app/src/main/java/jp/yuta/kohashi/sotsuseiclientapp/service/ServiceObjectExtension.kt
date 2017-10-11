@@ -12,26 +12,28 @@ import jp.yuta.kohashi.sotsuseiclientapp.App
  */
 
 interface ServiceObjectExtension<T : Any> {
-
+    
+    private fun javaClass():Class<T> = ((this as Object).`class` as Class<T>)
+    
     /**
      * サービスが起動しているか
      */
     fun isRunning(): Boolean {
         val am = App.context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val listServiceInfo = am.getRunningServices(Integer.MAX_VALUE)
-        return listServiceInfo.any { it.service.className == ((this as Object).`class` as Class<T>).name }
+        return listServiceInfo.any { it.service.className == javaClass().name }
     }
 
     /**
      * サービス起動
      * 戻り値は起動に成功かすでに起動しているか
      */
-    fun start(): ServiceStateResult {
+    fun start(): StateResult {
         return if (isRunning()) {
-            App.context.startService(Intent(App.context, ((this as Object).`class` as Class<T>).javaClass))
-            ServiceStateResult.SUCCESS_RUN
+            App.context.startService(Intent(App.context, javaClass().javaClass))
+            StateResult.SUCCESS_RUN
         } else {
-            ServiceStateResult.ALREADY_RUNNING
+            StateResult.ALREADY_RUNNING
         }
     }
 
@@ -39,19 +41,20 @@ interface ServiceObjectExtension<T : Any> {
      * サービス停止
      * 戻り値はすでにに停止しているかどうか
      */
-    fun stop(): ServiceStateResult {
+    fun stop(): StateResult {
         return if (isRunning()) {
-            App.context.stopService(Intent(App.context, ((this as Object).`class` as Class<T>).javaClass))
-            ServiceStateResult.SUCCESS_STOP
+            App.context.stopService(Intent(App.context, javaClass().javaClass))
+            StateResult.SUCCESS_STOP
         } else {
-            ServiceStateResult.ALREADY_STOPPED
+            StateResult.ALREADY_STOPPED
         }
     }
 }
 
-enum class ServiceStateResult {
+enum class StateResult {
     ALREADY_RUNNING,
     SUCCESS_RUN,
     ALREADY_STOPPED,
     SUCCESS_STOP
 }
+
