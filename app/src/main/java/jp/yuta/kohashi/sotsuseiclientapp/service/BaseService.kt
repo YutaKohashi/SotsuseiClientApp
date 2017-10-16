@@ -1,6 +1,8 @@
 package jp.yuta.kohashi.sotsuseiclientapp.service
 
 import android.app.Service
+import android.content.Intent
+import android.os.IBinder
 
 /**
  * Author : yutakohashi
@@ -9,4 +11,9 @@ import android.app.Service
  */
 abstract class BaseService: Service(){
 
+
+    /**
+     * 使用しない
+     */
+    override fun onBind(p0: Intent?): IBinder? = null
 }

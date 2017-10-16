@@ -30,6 +30,7 @@ class RunningActivity : BaseActivity() {
         when (SotsuseiClientAppService.start(SotsuseiClientAppService::class.java)) {
             StateResult.ALREADY_RUNNING -> ToastHelper.alreadyRunningService()
             StateResult.SUCCESS_RUN -> ToastHelper.runService()
+            else -> { }
         }
     }
 

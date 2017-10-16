@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Parcelable
 import android.util.Log
 import android.view.KeyEvent
-import jp.yuta.kohashi.sotsuseiclientapp.service.SotsuseiClientAppService
 
 
 /**
