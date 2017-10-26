@@ -14,8 +14,8 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
 
  class LoginActivity:BaseActivity(){
 
-    companion object :StartActivity {
-        override fun start(activity: Activity)  = activity.startActivity(Intent(activity,LoginActivity::class.java))
+    companion object :StartActivity<LoginActivity> {
+        override fun start(activity: Activity) = super.start(activity,LoginActivity::class.java)
     }
 
 

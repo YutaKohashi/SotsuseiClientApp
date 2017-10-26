@@ -17,8 +17,10 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.ToastHelper
  */
 class RunningActivity : BaseActivity() {
 
-    companion object : StartActivity {
-        override fun start(activity: Activity)  = activity.startActivity(Intent(activity,RunningActivity::class.java))
+    companion object : StartActivity<RunningActivity> {
+        override fun start(activity: Activity) = super.start(activity, RunningActivity::class.java)
+
+//        override fun start(activity: Activity)  = activity.startActivity(Intent(activity,RunningActivity::class.java))
     }
 
     override val fragment: Fragment?
@@ -30,7 +32,8 @@ class RunningActivity : BaseActivity() {
         when (SotsuseiClientAppService.start(SotsuseiClientAppService::class.java)) {
             StateResult.ALREADY_RUNNING -> ToastHelper.alreadyRunningService()
             StateResult.SUCCESS_RUN -> ToastHelper.runService()
-            else -> { }
+            else -> {
+            }
         }
     }
 
