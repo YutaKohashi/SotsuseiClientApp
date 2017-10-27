@@ -1,12 +1,17 @@
 package jp.yuta.kohashi.sotsuseiclientapp.service
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioManager
-import android.media.session.MediaSession
-import android.media.session.PlaybackState
+import android.os.Build
+import android.os.Handler
+import android.os.VibrationEffect
 import android.util.Log
 import jp.yuta.kohashi.sotsuseiclientapp.receiver.MediaControlReceiver
+import android.os.Vibrator
+import android.widget.Toast
 
 
 /**
@@ -19,62 +24,72 @@ class SotsuseiClientAppService : BaseService() {
     private val TAG = SotsuseiClientAppService.javaClass.simpleName
 
     private var mAudioManager: AudioManager? = null
-    private var mComponentName: ComponentName? = null
-    private var mSession: MediaSession? = null
+    private var tmpVolumeLevel = 0
+
+    private var invokeFlg = true
 
     /**
      * broadcastreceiverのイベント処理
      */
     private val invokeAction: () -> Unit = {
-        Log.d(TAG, "invokeAction")
+        mAudioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, if (tmpVolumeLevel == 0) 1; else tmpVolumeLevel, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
+        if (invokeFlg) {
+            Log.d(TAG, "invokeAction")
+            Toast.makeText(applicationContext, "invokeAction", Toast.LENGTH_SHORT).show()
+            invokeFlg = false
+            val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            if (Build.VERSION.SDK_INT >= 26) {
+                vibrator.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                vibrator.vibrate(150);
+            }
+            Handler().postDelayed({
+                invokeFlg = true
+            }, 3000L)
+        }
     }
 
-    companion object : ServiceObjectExtension<SotsuseiClientAppService> {
+    companion object : ServiceExtension<SotsuseiClientAppService> {
+        override fun start(): StateResult = super.start(SotsuseiClientAppService::class.java)
+        override fun stop(): StateResult = super.stop(SotsuseiClientAppService::class.java)
+        override fun isRunning(): Boolean = super.isRunning(SotsuseiClientAppService::class.java)
+
         var sBroadcastReceiver: MediaControlReceiver? = null
     }
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-//        Log.d(TAG, "onStartCommand")
-//        sBroadcastReceiver = MediaControlReceiver(invokeAction)
-//        mAudioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-//        mComponentName = ComponentName(this,MediaControlReceiver::class.java)
-//        mAudioManager?.registerMediaButtonEventReceiver(mComponentName)
-//
-//        val intentFilter = IntentFilter(Intent.ACTION_MEDIA_BUTTON)
-//        intentFilter.priority = 1000
-////        registerReceiver(sBroadcastReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF))
-//        registerReceiver(sBroadcastReceiver, intentFilter)
-
-        mSession = MediaSession(this, "TAG")
-
-        mSession?.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS or MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS)
-
-        val state = PlaybackState.Builder()
-                .setActions(
-                        PlaybackState.ACTION_PLAY or PlaybackState.ACTION_PLAY_PAUSE or
-                                PlaybackState.ACTION_PLAY_FROM_MEDIA_ID or PlaybackState.ACTION_PAUSE or
-                                PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SKIP_TO_PREVIOUS)
-//                .setState(PlaybackState.STATE_PLAYING, position, speed, SystemClock.elapsedRealtime())
-                .build()
-        mSession?.setPlaybackState(state)
-        mSession?.setCallback(object : MediaSession.Callback() {
-            override fun onMediaButtonEvent(mediaButtonIntent: Intent?): Boolean {
-                Log.d(TAG, "onMediaButtonEvent")
-                return super.onMediaButtonEvent(mediaButtonIntent)
-            }
-        })
-
-        if (!(mSession?.isActive?: true)) mSession?.isActive = true
-
-        return super.onStartCommand(intent, flags, startId)
+        Log.d(TAG, "onStartCommand")
+        registerReceiver()
+        SotsuseiSoundService.start()
+        mAudioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        tmpVolumeLevel = mAudioManager?.getStreamVolume(AudioManager.STREAM_MUSIC) ?: 0
+        if (tmpVolumeLevel == 0) mAudioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 1, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
+        return START_REDELIVER_INTENT
     }
 
     override fun onDestroy() {
+        Log.d(TAG, "onDestroy")
         super.onDestroy()
-        mSession?.isActive = false
-//        unregisterReceiver(sBroadcastReceiver)
+        unregisterReceiver()
+        if (tmpVolumeLevel == 0) mAudioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, tmpVolumeLevel, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
+        SotsuseiSoundService.stop()
     }
 
+    // region broadcast receiver
+
+    private fun registerReceiver() {
+        sBroadcastReceiver = MediaControlReceiver(invokeAction)
+        val intentFilter = IntentFilter(Intent.ACTION_MEDIA_BUTTON)
+        intentFilter.priority = 1000
+        intentFilter.addAction("android.media.VOLUME_CHANGED_ACTION")
+        registerReceiver(sBroadcastReceiver, intentFilter)
+    }
+
+    private fun unregisterReceiver() {
+        unregisterReceiver(sBroadcastReceiver)
+    }
+
+    // endregion
 
 }
