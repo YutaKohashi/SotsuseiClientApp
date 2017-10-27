@@ -19,18 +19,18 @@ class MediaControlReceiver(action:() -> Unit) : BroadcastReceiver() {
     private val action = action
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d(TAG, "onReceive")
+//        Log.d(TAG, "onReceive")
 //        if (Intent.ACTION_MEDIA_BUTTON == intent.action) {
 //
 //        }
-        val event = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_KEY_EVENT) as KeyEvent
-        when(event.keyCode){
-            KeyEvent.KEYCODE_VOLUME_DOWN ,
-            KeyEvent.KEYCODE_VOLUME_UP,
-            KeyEvent.KEYCODE_VOLUME_MUTE -> {
-                //　押下処理
+//        val event = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_KEY_EVENT) as KeyEvent
+//        when(event.keyCode){
+//            KeyEvent.KEYCODE_VOLUME_DOWN ,
+//            KeyEvent.KEYCODE_VOLUME_UP,
+//            KeyEvent.KEYCODE_VOLUME_MUTE -> {
+//                //　押下処理
                 action.invoke()
-            }
-        }
+//            }
+//        }
     }
 }

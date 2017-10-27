@@ -29,7 +29,7 @@ class RunningActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        when (SotsuseiClientAppService.start(SotsuseiClientAppService::class.java)) {
+        when (SotsuseiClientAppService.start()) {
             StateResult.ALREADY_RUNNING -> ToastHelper.alreadyRunningService()
             StateResult.SUCCESS_RUN -> ToastHelper.runService()
             else -> {
