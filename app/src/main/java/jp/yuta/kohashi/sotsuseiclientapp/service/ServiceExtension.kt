@@ -1,6 +1,7 @@
 package jp.yuta.kohashi.sotsuseiclientapp.service
 
 import android.app.ActivityManager
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import jp.yuta.kohashi.sotsuseiclientapp.App
@@ -11,17 +12,19 @@ import jp.yuta.kohashi.sotsuseiclientapp.App
  * Date : 10 / 10 / 2017
  */
 
-interface ServiceObjectExtension<T : BaseService> {
-    
-//    private fun javaClass():Class<T> = ((this as Object).`class` as Class<T>)
-    
+internal interface ServiceExtension<T : Service> {
+
+    abstract fun isRunning(): Boolean
+    abstract fun start(): StateResult
+    abstract fun stop(): StateResult
+
     /**
      * サービスが起動しているか
      */
-    fun isRunning(clazz:Class<T>): Boolean {
+    fun isRunning(clazz: Class<T>): Boolean {
         val am = App.context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val listServiceInfo = am.getRunningServices(Integer.MAX_VALUE)
-        val name:String = clazz.name
+        val name: String = clazz.name
         return listServiceInfo.any { it.service.className == clazz.name }
     }
 
@@ -29,9 +32,9 @@ interface ServiceObjectExtension<T : BaseService> {
      * サービス起動
      * 戻り値は起動に成功かすでに起動しているか
      */
-    fun start(clazz:Class<T>): StateResult {
+    fun start(clazz: Class<T>): StateResult {
         return if (!isRunning(clazz)) {
-            App.context.startService(Intent(App.context, clazz))
+            App.context.startService(Intent(App.context,clazz))
             StateResult.SUCCESS_RUN
         } else {
             StateResult.ALREADY_RUNNING
@@ -42,9 +45,9 @@ interface ServiceObjectExtension<T : BaseService> {
      * サービス停止
      * 戻り値はすでにに停止しているかどうか
      */
-    fun stop(clazz:Class<T>): StateResult {
+    fun stop(clazz: Class<T>): StateResult {
         return if (isRunning(clazz)) {
-            App.context.stopService(Intent(App.context, clazz))
+            App.context.stopService(Intent(App.context,clazz))
             StateResult.SUCCESS_STOP
         } else {
             StateResult.ALREADY_STOPPED
