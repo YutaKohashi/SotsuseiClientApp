@@ -1,6 +1,5 @@
 package jp.yuta.kohashi.sotsuseiclientapp.service
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -8,10 +7,10 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
 import android.os.VibrationEffect
-import android.util.Log
-import jp.yuta.kohashi.sotsuseiclientapp.receiver.MediaControlReceiver
 import android.os.Vibrator
+import android.util.Log
 import android.widget.Toast
+import jp.yuta.kohashi.sotsuseiclientapp.receiver.MediaControlReceiver
 
 
 /**
@@ -24,24 +23,25 @@ class SotsuseiClientAppService : BaseService() {
     private val TAG = SotsuseiClientAppService.javaClass.simpleName
 
     private var mAudioManager: AudioManager? = null
-    private var tmpVolumeLevel = 0
+    private var mTmpVolumeLevel = 0
+    private var mTmpRingMode: Int = AudioManager.RINGER_MODE_NORMAL
 
-    private var invokeFlg = true
 
     /**
      * broadcastreceiverのイベント処理
      */
+    private var invokeFlg = true
     private val invokeAction: () -> Unit = {
-        mAudioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, if (tmpVolumeLevel == 0) 1; else tmpVolumeLevel, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
+        mAudioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, if (mTmpVolumeLevel == 0) 1 else mTmpVolumeLevel, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
         if (invokeFlg) {
             Log.d(TAG, "invokeAction")
             Toast.makeText(applicationContext, "invokeAction", Toast.LENGTH_SHORT).show()
             invokeFlg = false
             val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             if (Build.VERSION.SDK_INT >= 26) {
-                vibrator.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
+                vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
             } else {
-                vibrator.vibrate(150);
+                vibrator.vibrate(50);
             }
             Handler().postDelayed({
                 invokeFlg = true
@@ -63,16 +63,31 @@ class SotsuseiClientAppService : BaseService() {
         registerReceiver()
         SotsuseiSoundService.start()
         mAudioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        tmpVolumeLevel = mAudioManager?.getStreamVolume(AudioManager.STREAM_MUSIC) ?: 0
-        if (tmpVolumeLevel == 0) mAudioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 1, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
-        return START_REDELIVER_INTENT
+        mTmpVolumeLevel = mAudioManager?.getStreamVolume(AudioManager.STREAM_MUSIC) ?: 0
+        if (mTmpVolumeLevel == 0) mAudioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, 1, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
+//        return START_REDELIVER_INTENT
+        mTmpRingMode = mAudioManager?.ringerMode ?: AudioManager.RINGER_MODE_NORMAL
+
+        Log.d(TAG, "mTmpVolumeLevel = " + mTmpVolumeLevel.toString())
+        Log.d(TAG, "mTmpRingMode    = " + mTmpRingMode.toString())
+
+        if (mTmpRingMode != AudioManager.RINGER_MODE_NORMAL) mAudioManager?.ringerMode = AudioManager.RINGER_MODE_NORMAL
+
+        return START_STICKY
     }
 
     override fun onDestroy() {
         Log.d(TAG, "onDestroy")
         super.onDestroy()
         unregisterReceiver()
-        if (tmpVolumeLevel == 0) mAudioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, tmpVolumeLevel, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
+        Log.d(TAG, "mAudioManager?.getStreamVolume = " + mAudioManager?.getStreamVolume(AudioManager.STREAM_MUSIC).toString())
+        Log.d(TAG, "mAudioManager?.ringerMode      = " + mAudioManager?.ringerMode.toString())
+        if (mTmpVolumeLevel == 0) mAudioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, mTmpVolumeLevel, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
+        mAudioManager?.ringerMode = mTmpRingMode
+
+
+        Log.d(TAG, "mTmpVolumeLevel = " + mTmpVolumeLevel.toString())
+        Log.d(TAG, "mTmpRingMode    = " + mTmpRingMode.toString())
         SotsuseiSoundService.stop()
     }
 
@@ -83,6 +98,7 @@ class SotsuseiClientAppService : BaseService() {
         val intentFilter = IntentFilter(Intent.ACTION_MEDIA_BUTTON)
         intentFilter.priority = 1000
         intentFilter.addAction("android.media.VOLUME_CHANGED_ACTION")
+
         registerReceiver(sBroadcastReceiver, intentFilter)
     }
 

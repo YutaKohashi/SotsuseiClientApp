@@ -1,11 +1,12 @@
 package jp.yuta.kohashi.sotsuseiclientapp.service
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.media.AudioManager
 import android.media.MediaPlayer
-import android.os.*
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import jp.yuta.kohashi.sotsuseiclientapp.R
 
@@ -70,7 +71,8 @@ class SotsuseiSoundService : BaseService() {
         Log.d(TAG, "onStartCommand")
 //        mHandler.dispatchMessage(mHandler.obtainMessage( ActionState.ACTION_START.num))
         actionStart()
-        return START_REDELIVER_INTENT
+//        return START_REDELIVER_INTENT
+        return START_STICKY
     }
 
     override fun onDestroy() {
