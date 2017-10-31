@@ -4,7 +4,7 @@ import android.os.Bundle
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.home.HomeActivity
-import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_login_tenpo.*
 
 /**
  * Author : yutakohashi
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 class LoginFragment:BaseFragment(){
 
     override val sLayoutRes: Int
-        get() = R.layout.fragment_login
+        get() = R.layout.fragment_login_tenpo
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
