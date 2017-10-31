@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SotsuseiClientApp</string>
 
-    <string name="already_running_servce">すでに実行しています</string>
+    <string name="already_running_servce">実行中です</string>
     <string name="success_runnning_service">開始しました</string>
     <string name="already_stop_service">すでに終了しています</string>
     <string name="success_stop_servivce">終了しました</string>

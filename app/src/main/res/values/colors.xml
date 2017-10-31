@@ -2,14 +2,16 @@
 <resources>
     <color name="colorPrimary">#27B3B6</color>
     <color name="colorPrimaryDark">#0e7578</color>
+    <color name="colorAccent_dark">#a98b30</color>
     <color name="colorAccent">#c6a339</color>
-
+    <color name="colorAccent_light">#FFD966</color>
     <!--background color-->
     <color name="bg_white">#FFFF</color>
     <color name="bg_main">#27B3B6</color>
 
     <!--text color-->
-    <color  name="text_gray_light">#e4e4e4</color>
+    <color name="text_gray_light">#f2f2f2</color>
+    <color  name="text_gray_light_more">#e4e4e4</color>
     <color name="text_gray_medium">#8e8d8d</color>
     <color name="text_gray_dark">#464646</color>
     <color name="text_red">#ef3e52</color>
