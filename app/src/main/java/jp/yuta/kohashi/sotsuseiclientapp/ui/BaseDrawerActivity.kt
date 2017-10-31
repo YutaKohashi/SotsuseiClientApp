@@ -1,15 +1,21 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.annotation.MenuRes
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
+import android.transition.Slide
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.ImageView
+import jp.yuta.kohashi.fakelineapp.utils.DisplayUtil
+import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.utils.Util
 
 /**
@@ -20,9 +26,9 @@ import jp.yuta.kohashi.sotsuseiclientapp.utils.Util
 abstract class BaseDrawerActivity : BaseActivity() {
     private val TAG = BaseDrawerActivity::class.java.simpleName
 
-    private lateinit var mDrawerLayout: DrawerLayout
-    private lateinit var mContainerView: FrameLayout
-    private lateinit var mNavigationView: NavigationView
+    protected lateinit var mDrawerLayout: DrawerLayout
+    protected lateinit var mContainerView: FrameLayout
+    protected lateinit var mNavigationView: NavigationView
 
     /**
      * メニュー項目
@@ -41,9 +47,6 @@ abstract class BaseDrawerActivity : BaseActivity() {
      */
     open protected val headerViewFromView: View? = null
 
-    /**
-     * conteinerviewにfragmentをセット
-     */
     /**
      * フラグメントを設置するとき
      */
@@ -66,16 +69,18 @@ abstract class BaseDrawerActivity : BaseActivity() {
      */
     override val contentViewFromView: View? by lazy { createContentView() }
 
+    @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        onCreate(savedInstanceState, false)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?, isEvent: Boolean) {
+        super.onCreate(savedInstanceState, isEvent)
 
         containerViewFromRes?.let { mContainerView.addView(Util.layoutRes2View(this, it, mContainerView, true)) }
         containerViewFromView?.let { mContainerView.addView(it) }
         containerFragment?.let { supportFragmentManager.beginTransaction().apply { add(mContainerView.id, it) }.commit() }
-    }
-
-    override fun setEvent() {
-
+        if (isEvent) setEvent()
     }
 
     /**
@@ -105,5 +110,57 @@ abstract class BaseDrawerActivity : BaseActivity() {
         mDrawerLayout.addView(mNavigationView)
 
         return mDrawerLayout
+    }
+
+    fun openDrawer(){
+        mDrawerLayout.openDrawer(Gravity.LEFT)
+    }
+
+    fun closeDrawer(){
+        mDrawerLayout.closeDrawer(Gravity.START)
+    }
+
+
+    override fun replaceFragment(fragment: Fragment) {
+        val manager = supportFragmentManager
+        val transaction = manager.beginTransaction()
+        transaction.replace(mContainerView.id, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    override fun addFragment(fragment: Fragment) {
+        val manager = supportFragmentManager
+        val transaction = manager.beginTransaction()
+        transaction.add(mContainerView.id, fragment)
+        transaction.addToBackStack("")
+        transaction.commit()
+    }
+
+    fun addFragment(fragment:Fragment,sharedView:View,transitionName:String){
+        val manager = supportFragmentManager
+        val transaction = manager.beginTransaction()
+        transaction.addSharedElement(sharedView,transitionName)
+        transaction.addToBackStack("")
+        transaction.replace(mContainerView.id, fragment)
+        transaction.commit()
+    }
+
+    /**
+     * デフォルトのdrawertoggleを作成するメソッド
+     */
+    protected fun defaultDrawerToggle():View{
+        return ImageButton(this).apply {
+            val dp5 = DisplayUtil.dp2px(5f)
+            val dp50 = DisplayUtil.dp2px(50f)
+            val dp15 = DisplayUtil.dp2px(15f)
+
+            setPadding(dp5, dp5, dp5, dp5)
+            background = getDrawable(R.drawable.bg_btn_drawer_toggle)
+            setImageResource(R.drawable.ic_menu)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            elevation = DisplayUtil.dp2px(4f).toFloat()
+            layoutParams = DrawerLayout.LayoutParams(dp50,dp50).apply { setMargins(dp15,dp15,0,0) }
+        }
     }
 }
