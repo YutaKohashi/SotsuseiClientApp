@@ -18,8 +18,7 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
     }
 
 
-    override val fragment: Fragment?
-        get() = LoginFragment()
+    override val fragment: Fragment? = LoginFragment()
 
     override fun setEvent() {
 
