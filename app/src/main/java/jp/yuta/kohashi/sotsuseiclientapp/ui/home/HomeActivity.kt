@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.View
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.service.SotsuseiClientAppService
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseDrawerActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.running.RunningFragment
+import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 
 /**
  * Author : yutakohashi
@@ -30,6 +30,8 @@ class HomeActivity : BaseDrawerActivity() {
 
     override val menuItemFromRes: Int? = R.menu.menu_drawer
 
+    override val headerViewFromRes: Int? = R.layout.header_drawer
+
     private lateinit var mNavigationButton: View
 
     @SuppressLint("MissingSuperCall")
@@ -45,6 +47,8 @@ class HomeActivity : BaseDrawerActivity() {
     }
 
     override fun setEvent() {
+        mNavigationView.setBackgroundColor(ResUtil.color(R.color.bg_main))
+
         if (SotsuseiClientAppService.isRunning()) {
             Handler(Looper.getMainLooper()).postDelayed({
                 addFragment(RunningFragment())
@@ -55,5 +59,4 @@ class HomeActivity : BaseDrawerActivity() {
             openDrawer()
         }
     }
-
 }
