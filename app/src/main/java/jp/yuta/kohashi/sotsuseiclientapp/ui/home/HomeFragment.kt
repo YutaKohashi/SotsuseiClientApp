@@ -6,12 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.running.RunningFragment
+import jp.yuta.kohashi.sotsuseiclientapp.ui.view.Circle
 import kotlinx.android.synthetic.main.fragment_home.*
-import android.os.Looper
 
 
 /**
@@ -27,6 +28,9 @@ class HomeFragment : BaseFragment() {
 
 
     override fun setEvent() {
+        val animation = Circle.CircleAngleAnimation(circle, 240)
+        animation.duration = 1000
+        circle.startAnimation(animation)
 
         startButton.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
@@ -50,5 +54,10 @@ class HomeFragment : BaseFragment() {
                 .setPositiveButton("設定画面を開く", { _, _ ->
                     callback.invoke()
                 }).create().show()
+    }
+
+    override fun onBackPressed(): Boolean {
+        activity.finish()
+        return super.onBackPressed()
     }
 }

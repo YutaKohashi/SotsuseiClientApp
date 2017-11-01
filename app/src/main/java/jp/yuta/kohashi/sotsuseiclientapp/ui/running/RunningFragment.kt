@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.transition.TransitionInflater
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import jp.yuta.kohashi.sotsuseiclientapp.service.SotsuseiClientAppService
 import jp.yuta.kohashi.sotsuseiclientapp.service.StateResult
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.ToastHelper
-import jp.yuta.kohashi.sotsuseiclientapp.ui.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_running.*
 
 /**
@@ -52,13 +50,17 @@ class RunningFragment : BaseFragment() {
             }
 
             Handler(Looper.getMainLooper()).postDelayed({
-                if (activity.supportFragmentManager.backStackEntryCount != 0) activity.supportFragmentManager.popBackStack()
+                popBackStack()
             }, 400)
-
-
         }
+    }
 
-
+    /**
+     * 戻るボタンの押下イベント
+     */
+    override fun onBackPressed():Boolean {
+        activity.finish()
+        return super.onBackPressed()
     }
 
 }
