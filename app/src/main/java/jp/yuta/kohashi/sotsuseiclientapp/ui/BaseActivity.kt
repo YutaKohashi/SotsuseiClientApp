@@ -65,11 +65,32 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun addFragment(fragment: Fragment) {
         if (mRootView == null) return
-
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
         transaction.add(mRootView!!.id, fragment)
         transaction.commit()
+    }
+
+    /**
+     * 戻るボタンの押下イベント
+     */
+    override fun onBackPressed() {
+        super.onBackPressed()
+        currentFragment()?.let {
+            /**
+             * fragment側でfalseを返すとactivityのonbackpressedイベントは呼ばれない
+             */
+            if ((it as? BaseFragment)?.onBackPressed() == false) return
+            else onBackPressed()
+        } ?: super.onBackPressed()
+    }
+
+    protected fun currentFragment(): Fragment? {
+        try {
+            return supportFragmentManager.fragments?.filter { it != null && it.isVisible }?.get(0)
+        }catch (e:Exception){
+            return null
+        }
     }
 
     /**

@@ -12,9 +12,9 @@ import android.view.ViewGroup
  * Project name : SotsuseiClientApp
  * Date : 27 / 09 / 2017
  */
-abstract class BaseFragment:Fragment(){
+abstract class BaseFragment : Fragment() {
 
-    abstract val sLayoutRes:Int
+    abstract val sLayoutRes: Int
         @LayoutRes get
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -26,6 +26,18 @@ abstract class BaseFragment:Fragment(){
         super.onViewCreated(view, savedInstanceState)
         setEvent()
     }
+
+    protected fun popBackStack() {
+        if (activity != null && activity.supportFragmentManager.backStackEntryCount != 0)
+            activity.supportFragmentManager.popBackStack()
+    }
+
+    /**
+     * 戻るボタンの押下イベント
+     * @return backKey event through to activity
+     */
+    open fun onBackPressed(): Boolean = false
+
 
     /**
      * ボタンのクリック処理を記述chrome

@@ -7,7 +7,6 @@ import android.support.annotation.MenuRes
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
-import android.transition.Slide
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +24,12 @@ import jp.yuta.kohashi.sotsuseiclientapp.utils.Util
  */
 abstract class BaseDrawerActivity : BaseActivity() {
     private val TAG = BaseDrawerActivity::class.java.simpleName
+
+    /**
+     * 使用しない
+     */
+    override val contentViewFromRes: Int? = null
+    override var fragment: Fragment? = null
 
     protected lateinit var mDrawerLayout: DrawerLayout
     protected lateinit var mContainerView: FrameLayout
@@ -49,6 +54,7 @@ abstract class BaseDrawerActivity : BaseActivity() {
 
     /**
      * フラグメントを設置するとき
+     * fragment  current displayed
      */
     open protected val containerFragment: Fragment? = null
 
@@ -90,6 +96,7 @@ abstract class BaseDrawerActivity : BaseActivity() {
 
         mDrawerLayout = DrawerLayout(this).apply {
             layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            fitsSystemWindows = true
         }
         mContainerView = FrameLayout(this).apply {
             id = View.generateViewId()
@@ -100,10 +107,12 @@ abstract class BaseDrawerActivity : BaseActivity() {
             layoutParams = DrawerLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.MATCH_PARENT).also { params ->
                 params.gravity = Gravity.START
             }
-            fitsSystemWindows = true
+
+            fitsSystemWindows = false
             headerViewFromRes?.let { addHeaderView(Util.layoutRes2View(this@BaseDrawerActivity, it, this)) }
             headerViewFromView?.let { addHeaderView(it) }
             menuItemFromRes?.let { inflateMenu(it) }
+
         }
 
         mDrawerLayout.addView(mContainerView)
@@ -162,5 +171,18 @@ abstract class BaseDrawerActivity : BaseActivity() {
             elevation = DisplayUtil.dp2px(4f).toFloat()
             layoutParams = DrawerLayout.LayoutParams(dp50,dp50).apply { setMargins(dp15,dp15,0,0) }
         }
+    }
+
+    /**
+     * 戻るボタンの押下イベント
+     */
+    override fun onBackPressed() {
+        currentFragment()?.let {
+            /**
+             * fragment側でfalseを返すとactivityのonbackpressedイベントは呼ばれない
+             */
+            if ((it as? BaseFragment)?.onBackPressed() == false) return
+            else super.onBackPressed()
+        } ?:super.onBackPressed()
     }
 }
