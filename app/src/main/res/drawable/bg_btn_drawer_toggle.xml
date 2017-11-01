@@ -11,7 +11,7 @@
                         android:bottomLeftRadius="5dp"
                         android:topLeftRadius="5dp"
                         />
-                    <solid android:color="#fcfcfc" />
+                    <solid android:color="@color/bg_navigation_toggle" />
                 </shape>
             </item>
         </selector>
