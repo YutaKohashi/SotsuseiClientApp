@@ -1,4 +1,4 @@
-package jp.yuta.kohashi.fakelineapp.utils
+package jp.yuta.kohashi.sotsuseiclientapp.utils
 
 import android.content.res.Configuration
 import jp.yuta.kohashi.sotsuseiclientapp.App
@@ -52,6 +52,6 @@ object DisplayUtil {
         }
 
     val isOrientationLandscape: Boolean
-        get() = App.context.resources.configuration.orientation === Configuration.ORIENTATION_LANDSCAPE
+        get() = App.context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
 }
