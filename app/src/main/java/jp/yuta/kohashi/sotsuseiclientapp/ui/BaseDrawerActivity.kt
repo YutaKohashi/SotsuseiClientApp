@@ -13,8 +13,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
-import jp.yuta.kohashi.fakelineapp.utils.DisplayUtil
 import jp.yuta.kohashi.sotsuseiclientapp.R
+import jp.yuta.kohashi.sotsuseiclientapp.utils.DisplayUtil
 import jp.yuta.kohashi.sotsuseiclientapp.utils.Util
 
 /**

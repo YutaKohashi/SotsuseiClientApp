@@ -39,7 +39,6 @@ class RunningFragment : BaseFragment() {
     }
 
     override fun setEvent() {
-
         /**
          * ストップボタン
          */

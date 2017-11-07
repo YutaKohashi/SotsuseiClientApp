@@ -8,6 +8,7 @@
 
     <jp.yuta.kohashi.sotsuseiclientapp.ui.view.Circle
         android:id="@+id/circle"
+        android:visibility="gone"
         android:layout_width="200dp"
         android:layout_height="200dp" />
 

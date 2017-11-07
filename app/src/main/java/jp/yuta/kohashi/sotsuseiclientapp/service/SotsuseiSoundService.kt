@@ -26,7 +26,6 @@ class SotsuseiSoundService : BaseService() {
         ACTION_KILL(2);
 
         companion object {
-            val PREF_ACTION = "pref_action"
             fun from(findValue: Int): ActionState = ActionState.values().first { it.num == findValue }
         }
     }
