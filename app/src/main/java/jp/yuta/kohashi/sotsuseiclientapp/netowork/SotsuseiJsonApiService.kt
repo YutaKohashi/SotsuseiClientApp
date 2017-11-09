@@ -21,11 +21,25 @@ import retrofit2.http.*
  */
 interface SotsuseiJsonApiService {
 
-    @POST("/login/")
+    //　ログイン
+    // 店舗ログイン
+    @POST("/api/v1/store/login")
     fun postStoreLogin(@Body sId: String, @Body password: String): Observable<Model.Result>
 
-    @POST("/login/")
-    fun postEmployeeLogin(@Body eId: String, @Body password: String): Observable<Model.Result>
+    // 従業員ログイン
+    @POST("/api/v1/employee/login")
+    fun postEmployeeLogin(@Body sId: String, @Body password: String): Observable<Model.Result>
+
+
+    // ログアウト
+    @GET("/api/v1/logout")
+    fun getLogout(): Observable<Model.Result>
+
+    @Multipart
+    @POST("/api/v1/image")
+    fun postImage(@Part image: MultipartBody.Part, @Part("imageId") storeId: RequestBody): Observable<Model.Result>
+
+
 
     @POST("")
     fun postCaptureImage(@Body sId:String)
@@ -34,20 +48,17 @@ interface SotsuseiJsonApiService {
     fun getLogout(@Body sid:String)
 
 
-
-    @POST("/login/")
-    fun postLogin(@Body fileName: String): Observable<Model.Result>
-
-    @GET("")
-    fun postImage(@Body fileName: String): Observable<Model.Result>
-
-    @Multipart
-    @POST("/api/images/")
-    fun postImage(@Part image: MultipartBody.Part, @Part("imageId") storeId: RequestBody): Observable<Model.Result>
-
-    @Multipart
-    @POST("/")
-    fun postImage(@Part image: MultipartBody.Part): Observable<Model.Result>
+//
+//    @POST("/login/")
+//    fun postLogin(@Body fileName: String): Observable<Model.Result>
+//
+//    @GET("")
+//    fun postImage(@Body fileName: String): Observable<Model.Result>
+//
+//
+//    @Multipart
+//    @POST("/")
+//    fun postImage(@Part image: MultipartBody.Part): Observable<Model.Result>
 
     companion object {
 

@@ -14,11 +14,11 @@ import android.view.ViewGroup
  */
 abstract class BaseFragment : Fragment() {
 
-    abstract val sLayoutRes: Int
+    abstract val mLayoutRes: Int
         @LayoutRes get
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(sLayoutRes, container, false)
+        return inflater!!.inflate(mLayoutRes, container, false)
 
     }
 

@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment() {
 
-    override val sLayoutRes: Int
+    override val mLayoutRes: Int
         get() = R.layout.fragment_home
 
 

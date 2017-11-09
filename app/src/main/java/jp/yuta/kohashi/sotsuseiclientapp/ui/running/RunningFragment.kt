@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_running.*
 
 class RunningFragment : BaseFragment() {
 
-    override val sLayoutRes: Int
+    override val mLayoutRes: Int
         get() = R.layout.fragment_running
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

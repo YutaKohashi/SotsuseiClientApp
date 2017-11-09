@@ -2,6 +2,7 @@ package jp.yuta.kohashi.sotsuseiclientapp.netowork
 
 import android.graphics.Bitmap
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import jp.yuta.kohashi.sotsuseiclientapp.netowork.exception.ApiException
@@ -19,7 +20,9 @@ import okhttp3.RequestBody
  */
 object SotsuseiApiManager {
 
-    private var disposable: Disposable? = null
+//    private var disposable: Disposable? = null
+    private val mCompositeDisposable:CompositeDisposable = CompositeDisposable()
+
 
     private val mSotsuseiApiService by lazy {
         SotsuseiJsonApiService.create()
@@ -31,36 +34,41 @@ object SotsuseiApiManager {
     }
 
     fun postStoreLogin(sId: String, password: String, callback: Callback<Model.Result>) {
-        disposable = mSotsuseiApiService.postStoreLogin(sId, password).
+        val disposable: Disposable = mSotsuseiApiService.postStoreLogin(sId, password).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribe({ body: Model.Result? ->
                     callback.onSuccess(body)
                 }, { error ->
                     callback.onFailure(ApiException.error(error))
+                }, {
+
                 })
+        mCompositeDisposable.add(disposable)
     }
 
     fun uploadImage(bmp: Bitmap, callback: (model: Model.Query?, error: Boolean, type: ApiException.ErrorType) -> Unit) {
 
-        disposable = mSotsuseiApiService.postImage("").
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread()).
-                subscribe({ result ->
-                    val body: Model.Query = result.query
-                    callback.invoke(body, false, ApiException.ErrorType.ERROR_TYPE_UNKNOWN)
-                }, { error ->
-                    error.message
-                    callback.invoke(null, true, ApiException.ErrorType.ERROR_TYPE_API_STATUS)
-                })
+//        val disposable: Disposable = mSotsuseiApiService.postImage("").
+//                subscribeOn(Schedulers.io()).
+//                observeOn(AndroidSchedulers.mainThread()).
+//                subscribe({ result ->
+//                    val body: Model.Query = result.query
+//                    callback.invoke(body, false, ApiException.ErrorType.ERROR_TYPE_UNKNOWN)
+//                }, { error ->
+//                    error.message
+//                    callback.invoke(null, true, ApiException.ErrorType.ERROR_TYPE_API_STATUS)
+//                })
+//        mCompositeDisposable.add(disposable)
     }
+
 
     fun uploadImage(bmp: Bitmap, storeId: String, callback: (model: Model.Query?, error: Boolean, type: ApiException.ErrorType) -> Unit) {
 
         val imageBody: MultipartBody.Part = RetroUtil.bmp2Part(bmp, "imageData", "fileName")
         val storeIdBody: RequestBody = RetroUtil.string2reqbody(storeId)
 
-        disposable = mSotsuseiApiService.postImage(imageBody, storeIdBody).
+        val disposable: Disposable = mSotsuseiApiService.postImage(imageBody, storeIdBody).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribe({ result: Model.Result? ->
@@ -69,11 +77,12 @@ object SotsuseiApiManager {
                 }, { error ->
                     callback.invoke(null, true, ApiException.ErrorType.ERROR_TYPE_API_STATUS)
                 })
+        mCompositeDisposable.add(disposable)
     }
 
 
     fun dispose() {
-        if (disposable != null && !disposable!!.isDisposed) disposable?.dispose()
+        mCompositeDisposable.clear()
     }
 
 

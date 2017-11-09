@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.Toolbar
 
 /**
  * Activityを作る際は必ず継承してください
@@ -41,7 +43,18 @@ abstract class BaseActivity : AppCompatActivity() {
      */
     open protected val HIDE_STATUSBAR = false
 
-    protected var mRootView: ViewGroup? = null
+    /**
+     * フラグメント設置時にrootとなるViewGroup
+     */
+    protected var mRootView: LinearLayout? = null
+    /**
+     * フラグメント設置時にフラグメントのコンテナとなるViewGroup
+     */
+    protected var mFragmentContainer:FrameLayout? = null
+
+    /**
+     * setEventメソッドを実行するか
+     */
     protected var isEvent: Boolean = true
 
     @SuppressLint("MissingSuperCall")
@@ -55,12 +68,22 @@ abstract class BaseActivity : AppCompatActivity() {
         contentViewFromRes?.let { setContentView(it) }
         contentViewFromView?.let { setContentView(it) }
         fragment?.let {
-            mRootView = FrameLayout(this).apply {
+            // フラグメントコンテナ作成
+            mFragmentContainer = FrameLayout(this).apply {
                 id = View.generateViewId()
-                layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
             }
+
+            // ルートViewGroup作成
+            mRootView = LinearLayout(this).apply {
+                id = View.generateViewId()
+                layoutParams = FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+                orientation = LinearLayout.VERTICAL
+                addView(mFragmentContainer)
+            }
+
             setContentView(mRootView)
-            supportFragmentManager.beginTransaction().apply { add(mRootView!!.id, it) }.commit()
+            supportFragmentManager.beginTransaction().apply { add(mFragmentContainer!!.id, it) }.commit()
         }
         if (isEvent) setEvent()
     }

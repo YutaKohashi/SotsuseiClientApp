@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_login_tenpo.*
  */
 class LoginFragment:BaseFragment(){
 
-    override val sLayoutRes: Int
+    override val mLayoutRes: Int
         get() = R.layout.fragment_login_tenpo
 
 
