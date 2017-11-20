@@ -2,18 +2,27 @@
 <resources>
     <color name="colorPrimary">#77D1DF</color>
     <color name="colorPrimaryDark">#5ba0ab</color>
+    <color name="colorPrimaryDark2">#244b69</color>
     <color name="colorAccent_dark">#a98b30</color>
     <color name="colorAccent">#c6a339</color>
     <color name="colorAccent_light">#FFD966</color>
     <!--background color-->
     <color name="bg_white">#FFFF</color>
     <color name="bg_main">@color/colorPrimary</color>
+    <color name="bg_main_running">#376E9A</color>
+    <color name="bg_main_running_dark">#2c5779</color>
     <color name="bg_navigation_toggle">#FEFFFE</color>
-
+    <color name="bg_ripple_default">#34000000</color>
+    <color name="bg_shutter_button">#70AD47</color>
+    <color name="bg_illegalparking_button">#A5A6A5</color>
+    <color name="bg_gray_dark">#464646</color>
+    <color name="bg_gray_light">#f9f9f9</color>
     <!--text color-->
     <color name="text_gray_light">#f2f2f2</color>
     <color  name="text_gray_light_more">#e4e4e4</color>
     <color name="text_gray_medium">#8e8d8d</color>
     <color name="text_gray_dark">#464646</color>
     <color name="text_red">#ef3e52</color>
+
+    <color name="ic_light_gray">#f1f1f1</color>
 </resources>

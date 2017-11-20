@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toolbar
+import jp.yuta.kohashi.sotsuseiclientapp.R
 
 /**
  * Activityを作る際は必ず継承してください

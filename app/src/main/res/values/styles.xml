@@ -14,4 +14,8 @@
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
     </style>
 
+    <style name="NavigationDrawerStyle">
+        <item name="android:textColor">@color/text_gray_light</item>
+        <item name="itemTextColor">@color/text_gray_light</item>
+    </style>
 </resources>

@@ -46,12 +46,17 @@ class HomeActivity : BaseDrawerActivity() {
         setEvent()
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        if(SotsuseiClientAppService.isRunning())  navigationView.setBackgroundColor(ResUtil.color(R.color.bg_main_running))
+        else  navigationView.setBackgroundColor(ResUtil.color(R.color.bg_main))
+    }
     override fun setEvent() {
-        mNavigationView.setBackgroundColor(ResUtil.color(R.color.bg_main))
 
         if (SotsuseiClientAppService.isRunning()) {
             Handler(Looper.getMainLooper()).postDelayed({
-                addFragment(RunningFragment())
+                replaceFragmentWithFade(RunningFragment())
             }, 400)
         }
 

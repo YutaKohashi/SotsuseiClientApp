@@ -1,6 +1,8 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.annotation.MenuRes
@@ -15,6 +17,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.utils.DisplayUtil
+import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 import jp.yuta.kohashi.sotsuseiclientapp.utils.Util
 
 /**
@@ -33,7 +36,8 @@ abstract class BaseDrawerActivity : BaseActivity() {
 
     protected lateinit var mDrawerLayout: DrawerLayout
     protected lateinit var mContainerView: FrameLayout
-    protected lateinit var mNavigationView: NavigationView
+    lateinit var navigationView: NavigationView
+
 
     /**
      * メニュー項目
@@ -103,9 +107,19 @@ abstract class BaseDrawerActivity : BaseActivity() {
             layoutParams = DrawerLayout.LayoutParams(DrawerLayout.LayoutParams.MATCH_PARENT, DrawerLayout.LayoutParams.MATCH_PARENT)
         }
 
-        mNavigationView = NavigationView(this).apply {
+        navigationView = NavigationView(this).apply {
             layoutParams = DrawerLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.MATCH_PARENT).also { params ->
                 params.gravity = Gravity.START
+                val myColorStateList = ColorStateList(
+                        arrayOf(intArrayOf(android.R.attr.state_pressed,android.R.attr.state_enabled,android.R.attr.state_focused, android.R.attr.state_pressed,-android.R.attr.state_enabled), //1
+                                intArrayOf()
+                        ),
+                        intArrayOf(ResUtil.color(R.color.text_gray_light), //1
+                                ResUtil.color(R.color.text_gray_light)
+                        )
+                )
+                itemTextColor = myColorStateList
+                itemIconTintList = myColorStateList
             }
 
             fitsSystemWindows = false
@@ -116,7 +130,7 @@ abstract class BaseDrawerActivity : BaseActivity() {
         }
 
         mDrawerLayout.addView(mContainerView)
-        mDrawerLayout.addView(mNavigationView)
+        mDrawerLayout.addView(navigationView)
 
         return mDrawerLayout
     }
@@ -133,6 +147,15 @@ abstract class BaseDrawerActivity : BaseActivity() {
     override fun replaceFragment(fragment: Fragment) {
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
+        transaction.replace(mContainerView.id, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    fun replaceFragmentWithFade(fragment:Fragment){
+        val manager = supportFragmentManager
+        val transaction = manager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out,R.anim.fade_in, R.anim.fade_out)
         transaction.replace(mContainerView.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()

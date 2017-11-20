@@ -12,6 +12,9 @@ import jp.yuta.kohashi.sotsuseiclientapp.service.SotsuseiClientAppService
 import jp.yuta.kohashi.sotsuseiclientapp.service.StateResult
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.ToastHelper
+import jp.yuta.kohashi.sotsuseiclientapp.ui.home.HomeActivity
+import jp.yuta.kohashi.sotsuseiclientapp.ui.illegalparking.IllegalParkingDialogFragment
+import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 import kotlinx.android.synthetic.main.fragment_running.*
 
 /**
@@ -20,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_running.*
  * Date : 29 / 09 / 2017
  */
 
-class RunningFragment : BaseFragment() {
+class RunningFragment : BaseFragment() ,IllegalParkingDialogFragment.Callback{
 
     override val mLayoutRes: Int
         get() = R.layout.fragment_running
@@ -38,7 +41,14 @@ class RunningFragment : BaseFragment() {
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
+    override fun onResume() {
+        super.onResume()
+        toolbarColor(R.color.colorPrimaryDark2)
+        (activity as HomeActivity).navigationView.setBackgroundColor(ResUtil.color(R.color.bg_main_running))
+    }
+
     override fun setEvent() {
+
         /**
          * ストップボタン
          */
@@ -52,6 +62,22 @@ class RunningFragment : BaseFragment() {
                 popBackStack()
             }, 400)
         }
+
+        illegalparkingButton.setOnClickListener {
+            IllegalParkingDialogFragment.create{
+                parentFragment = this@RunningFragment
+            }.show()
+        }
+
+        shutterButton.setOnClickListener {
+
+        }
+    }
+
+    override fun onPositive() {
+    }
+
+    override fun onCancel() {
     }
 
     /**

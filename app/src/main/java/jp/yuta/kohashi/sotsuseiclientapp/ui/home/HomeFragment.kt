@@ -12,6 +12,7 @@ import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.running.RunningFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.view.Circle
+import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -26,6 +27,10 @@ class HomeFragment : BaseFragment() {
     override val mLayoutRes: Int
         get() = R.layout.fragment_home
 
+    override fun onResume() {
+        super.onResume()
+        (activity as HomeActivity).navigationView.setBackgroundColor(ResUtil.color(R.color.bg_main))
+    }
 
     override fun setEvent() {
         val animation = Circle.CircleAngleAnimation(circle, 240)
@@ -42,11 +47,10 @@ class HomeFragment : BaseFragment() {
             }
 
             Handler(Looper.getMainLooper()).postDelayed({
-                (activity as HomeActivity).addFragment(RunningFragment())
+                (activity as HomeActivity).replaceFragmentWithFade(RunningFragment())
             }, 400)
 
         }
-
     }
 
     private fun showNotifyPermissionDialog(callback: () -> Unit) {
