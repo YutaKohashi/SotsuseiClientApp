@@ -10,7 +10,8 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
  */
 class IllegalParkingFragment:BaseFragment(){
 
-//    override val mLayoutRes: Int = R.layout.fragment_illegal_parking
+    override val mLayoutRes: Int = 0
+
 
     override fun setEvent() {
 
