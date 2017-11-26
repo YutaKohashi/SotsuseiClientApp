@@ -3,9 +3,18 @@
     package="jp.yuta.kohashi.sotsuseiclientapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera2.full" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -24,10 +33,21 @@
 
         <activity android:name=".ui.home.HomeActivity" />
 
-        <service android:name=".service.SotsuseiClientAppService"
-            android:process=":service"/>
-        <service android:name=".service.SotsuseiSoundService"
-            android:process=":service"/>
+        <activity
+            android:name=".ui.illegalparking.IllegalParkingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.illegalparking.NumberPlateScanActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".service.SotsuseiClientAppService"
+            android:process=":service" />
+        <service
+            android:name=".service.SotsuseiSoundService"
+            android:process=":service" />
     </application>
 
 </manifest>

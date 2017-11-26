@@ -17,6 +17,7 @@
     <color name="bg_illegalparking_button">#A5A6A5</color>
     <color name="bg_gray_dark">#464646</color>
     <color name="bg_gray_light">#f9f9f9</color>
+    <color name="bg_camera_align">#55000000</color>
     <!--text color-->
     <color name="text_gray_light">#f2f2f2</color>
     <color  name="text_gray_light_more">#e4e4e4</color>

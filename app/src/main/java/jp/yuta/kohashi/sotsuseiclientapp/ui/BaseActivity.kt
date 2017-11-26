@@ -2,6 +2,7 @@ package jp.yuta.kohashi.sotsuseiclientapp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.support.annotation.ColorRes
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -12,6 +13,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toolbar
 import jp.yuta.kohashi.sotsuseiclientapp.R
+import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 
 /**
  * Activityを作る際は必ず継承してください
@@ -142,5 +144,18 @@ abstract class BaseActivity : AppCompatActivity() {
      * ボタンのクリック処理などを中心に記述
      */
     abstract fun setEvent()
+
+    protected fun toolbarColor(@ColorRes color:Int){
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ResUtil.color(color)
+    }
+
+    protected fun toolbarColorDefault(){
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ResUtil.color(R.color.colorPrimaryDark)
+    }
+
 
 }

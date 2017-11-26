@@ -2,6 +2,7 @@ package jp.yuta.kohashi.sotsuseiclientapp.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +14,9 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseDrawerActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.running.RunningFragment
 import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
+import android.R.attr.data
+
+
 
 /**
  * Author : yutakohashi
@@ -63,5 +67,12 @@ class HomeActivity : BaseDrawerActivity() {
         mNavigationButton.setOnClickListener {
             openDrawer()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val uploadType = supportFragmentManager.findFragmentById(mContainerView.id)
+
+        uploadType?.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

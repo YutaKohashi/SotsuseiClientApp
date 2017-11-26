@@ -18,4 +18,13 @@
         <item name="android:textColor">@color/text_gray_light</item>
         <item name="itemTextColor">@color/text_gray_light</item>
     </style>
+
+    <drawable name="translucent_background">#80000000</drawable>
+
+    <style name="Theme.Translucent" parent="AppTheme">
+        <item name="colorPrimaryDark">#2f2f30</item>
+        <item name="android:windowBackground">@drawable/translucent_background</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>
