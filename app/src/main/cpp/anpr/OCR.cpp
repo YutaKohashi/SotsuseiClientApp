@@ -46,6 +46,11 @@ OCR::OCR(string trainFile){
 
 }
 
+/**
+ * 
+ * @param in
+ * @return
+ */
 Mat OCR::preprocessChar(Mat in){
     //Remap image
     int h=in.rows;

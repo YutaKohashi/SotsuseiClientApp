@@ -1,10 +1,13 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.illegalparking
 
+import android.hardware.camera2.CameraCaptureSession
 import android.os.Bundle
 import android.view.View
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseDialogFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
+import jp.yuta.kohashi.sotsuseiclientapp.ui.view.CameraView
+import kotlinx.android.synthetic.main.diag_fragment_illegalparking.*
 
 /**
  * Author : yutakohashi
@@ -23,21 +26,35 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
 
     companion object {
         protected val KEY_REQUEST_CODE: String = "request_code"
+        protected val KEY_NUMBER: String = "number"
         fun create(action: Builder.() -> Unit): IllegalParkingDialogFragment = IllegalParkingDialogFragment.Builder(action).build()
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isCancelable = true
+
+        numberTextView.text = arguments.getInt(KEY_NUMBER).toString()
+
+        closeButton.setOnClickListener {
+            dismiss()
+        }
     }
 
-    fun dddd(){}
+    override fun onResume() {
+        super.onResume()
+    }
 
+    override fun onPause() {
+        super.onPause()
+
+    }
 
     class Builder private constructor() {
 
         var activity: BaseDialogFragment? = null
         var parentFragment: BaseFragment? = null
+        var number:Int = -1
         var requestCode: Int = 1000
 
         constructor(init: Builder.() -> Unit) : this() {
@@ -47,7 +64,7 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
         fun requestCode(action: Builder.() -> Int) = apply { requestCode = action() }
         fun <T> activity(action: Builder.() -> T)  where T : BaseDialogFragment, T : Callback = apply { activity = action() }
         fun <T> parentFragment(action: Builder.() -> T) where T : BaseFragment, T : Callback = apply { parentFragment = action() }
-
+        fun number(action: Builder.() -> Int) = apply { number = action() }
 
         fun build(): IllegalParkingDialogFragment {
 
@@ -59,6 +76,7 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
                 } else {
                     it.mTarget = parentFragment
                 }
+                bundle.putInt(KEY_NUMBER,number)
                 it.arguments = bundle
             }
         }

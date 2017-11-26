@@ -1,7 +1,10 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.illegalparking
 
+import android.app.Activity
 import android.support.v4.app.Fragment
+import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseToolbarActivity
+import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
 
 /**
  * Author : yutakohashi
@@ -9,11 +12,14 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseToolbarActivity
  * Date : 09 / 11 / 2017
  */
 
-class IllegalParkingActivity:BaseToolbarActivity(){
+class IllegalParkingActivity:BaseActivity(){
 
     override val fragment: Fragment = IllegalParkingFragment()
 
-     override var title = "違法駐車"
+
+    companion object : StartActivity<IllegalParkingActivity> {
+        override fun start(activity: Activity) = super.start(activity,IllegalParkingActivity::class.java)
+    }
 
 
     override fun setEvent() {

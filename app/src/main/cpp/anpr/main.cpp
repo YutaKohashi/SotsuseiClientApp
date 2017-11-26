@@ -161,7 +161,7 @@ string anpr(char *filename) {
     //SVM for each plate region to get valid car plates
     //Read file storage.
     FileStorage fs;
-    fs.open("/data/data/jp.yuta.kohashi.opencvapp/files/SVM.xml", FileStorage::READ);
+    fs.open("/data/data/jp.yuta.kohashi.sotsuseiclientapp.debug/files/SVM.xml", FileStorage::READ);
     Mat SVM_TrainingData;
     Mat SVM_Classes;
     fs["TrainingData"] >> SVM_TrainingData;
@@ -195,7 +195,7 @@ string anpr(char *filename) {
 //    if (web_mode != true)
 //        cout << "Num plates detected: " << plates.size() << "\n";
     //For each plate detected, recognize it with OCR
-    OCR ocr("/data/data/jp.yuta.kohashi.opencvapp/files/OCR.xml");
+    OCR ocr("/data/data/jp.yuta.kohashi.sotsuseiclientapp.debug/files/OCR.xml");
 
     ocr.saveSegments = true;
     ocr.DEBUG = ocr_debug_mode; // @f
@@ -432,9 +432,10 @@ extern "C"
 JNIEXPORT jstring
 
 JNICALL
-Java_jp_yuta_kohashi_opencvapp_AnprManager_stringFromTest(JNIEnv *env, jobject /* this */) {
+Java_jp_yuta_kohashi_sotsuseiclientapp_ui_illegalparking_AnprManager_stringFromTest(JNIEnv *env,
+                                                                                    jobject /* this */) {
 
-    char *filename = "/data/data/jp.yuta.kohashi.opencvapp/files/testimg.jpg";
+    char *filename = "/data/data/jp.yuta.kohashi.sotsuseiclientapp.debug/files/testimg.jpg";
     string result = anpr(filename);
     return env->NewStringUTF(result.c_str());
 }

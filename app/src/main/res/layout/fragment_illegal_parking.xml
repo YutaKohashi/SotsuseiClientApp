@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <FrameLayout
+        android:id="@+id/cameraViewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:background="@color/bg_camera_align"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/centerViewContainer"/>
+
+        <RelativeLayout
+            android:layout_centerVertical="true"
+            android:id="@+id/centerViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignStart="@+id/centerView"
+                android:layout_toStartOf="@+id/centerView"
+                android:background="@color/bg_camera_align" />
+
+            <View
+                android:id="@+id/centerView"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_centerHorizontal="true"/>
+
+            <View
+                android:background="@color/bg_camera_align"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@id/centerView"
+                android:layout_alignParentEnd="true"
+                android:layout_alignEnd="@+id/centerView"/>
+        </RelativeLayout>
+
+        <View
+            android:background="@color/bg_camera_align"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/centerViewContainer"/>
+    </RelativeLayout>
+</FrameLayout>
