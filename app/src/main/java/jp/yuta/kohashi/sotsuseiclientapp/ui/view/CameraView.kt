@@ -37,8 +37,8 @@ class CameraView : SurfaceView {
     private var mImageReader: ImageReader? = null
     //    private val IMAGE_WIDTH = 960
 //    private val IMAGE_HEIGHT = 720
-    private val IMAGE_WIDTH = 800
-    private val IMAGE_HEIGHT = 600
+    private val IMAGE_WIDTH = 300
+    private val IMAGE_HEIGHT = 225
     private val MAX_IMAGES = 5
 
     private var mBackgroundHandler = Handler()
@@ -59,7 +59,9 @@ class CameraView : SurfaceView {
     }
 
     fun getPreviewNonNullBitmap(callback: (Bitmap) -> Unit) {
-        mLatestBmp?.let { callback.invoke(it.copy(Bitmap.Config.ARGB_8888, false)) }
+        mLatestBmp?.let {
+            callback.invoke(it.copy(Bitmap.Config.ARGB_8888, false))
+        }
     }
 
     /**
