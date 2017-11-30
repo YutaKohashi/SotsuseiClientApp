@@ -27,6 +27,7 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
     companion object {
         protected val KEY_REQUEST_CODE: String = "request_code"
         protected val KEY_NUMBER: String = "number"
+        protected val KEY_PLATE: String = "plate"
         fun create(action: Builder.() -> Unit): IllegalParkingDialogFragment = IllegalParkingDialogFragment.Builder(action).build()
     }
 
@@ -34,8 +35,9 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         isCancelable = true
 
-        numberTextView.text = arguments.getInt(KEY_NUMBER).toString()
-
+        val plate:Plate = arguments.getParcelable(KEY_PLATE)
+        numberTextView.text = plate.number.toString()
+        imageView.setImageBitmap(plate.bmp)
         closeButton.setOnClickListener {
             dismiss()
         }
@@ -55,6 +57,7 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
         var activity: BaseDialogFragment? = null
         var parentFragment: BaseFragment? = null
         var number:Int = -1
+        var plate:Plate? = null
         var requestCode: Int = 1000
 
         constructor(init: Builder.() -> Unit) : this() {
@@ -65,6 +68,7 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
         fun <T> activity(action: Builder.() -> T)  where T : BaseDialogFragment, T : Callback = apply { activity = action() }
         fun <T> parentFragment(action: Builder.() -> T) where T : BaseFragment, T : Callback = apply { parentFragment = action() }
         fun number(action: Builder.() -> Int) = apply { number = action() }
+        fun plate(action: Builder.() -> Plate) = apply { plate = action() }
 
         fun build(): IllegalParkingDialogFragment {
 
@@ -77,6 +81,7 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
                     it.mTarget = parentFragment
                 }
                 bundle.putInt(KEY_NUMBER,number)
+                bundle.putParcelable(KEY_PLATE,plate)
                 it.arguments = bundle
             }
         }

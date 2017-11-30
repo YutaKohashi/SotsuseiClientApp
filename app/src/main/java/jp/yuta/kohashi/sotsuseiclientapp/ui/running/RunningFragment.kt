@@ -70,9 +70,6 @@ class RunningFragment : BaseFragment() ,IllegalParkingDialogFragment.Callback{
         }
 
         illegalparkingButton.setOnClickListener {
-            //            IllegalParkingDialogFragment.create{
-//                parentFragment = this@RunningFragment
-//            }.show()
             NumberPlateScanActivity.start(activity)
         }
 
@@ -85,14 +82,15 @@ class RunningFragment : BaseFragment() ,IllegalParkingDialogFragment.Callback{
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == NumberPlateScanActivity.REQUEST_CODE) {
             if (resultCode == NumberPlateScanActivity.RESULT_CODE_CANCEL) return
-            val plate: Plate? = data?.getParcelableExtra<Plate>("data")
+            val p: Plate? = data?.getParcelableExtra<Plate>("data")
 
-            if (plate != null) {
+            if (p != null) {
 //                Toast.makeText(context, plate.number.toString(), Toast.LENGTH_SHORT).show()
                 Handler(Looper.getMainLooper()).postDelayed({
                     IllegalParkingDialogFragment.create {
                         parentFragment = this@RunningFragment
-                        number = plate.number
+                        plate = p
+
                     }.show()
                 }, 800)
 

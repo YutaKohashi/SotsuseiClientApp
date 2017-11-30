@@ -3,12 +3,13 @@ package jp.yuta.kohashi.sotsuseiclientapp.ui.illegalparking
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+
 import jp.yuta.kohashi.sotsuseiclientapp.App
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import kotlin.concurrent.thread
 
 /**
  * Author : yutakohashi
@@ -20,7 +21,6 @@ class AnprManager {
     companion object {
 
         init {
-            System.loadLibrary("native-lib")
             System.loadLibrary("ANPR")
         }
 
@@ -51,21 +51,26 @@ class AnprManager {
     }
 
     /**
-     *
+     *　
      */
     fun apply(): Plate? {
-        return convertPlate(stringFromTest())
+        return convertPlate(anpr())
     }
 
     fun apply(bitmap: Bitmap): Plate? {
         saveJpg(bitmap)
-        return convertPlate(stringFromTest())
+        return convertPlate(anpr())
     }
 
-    fun apply(bitmap:Bitmap, callback:(Plate?)-> Unit){
-        saveJpg(bitmap)
+    fun apply(bitmap: Bitmap, callback: (Plate?) -> Unit) {
+
+        // 90度回転したBitmap画像を生成
+        val m:Matrix = Matrix().apply { setRotate(90f) }
+        val roted: Bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, m, true)
+        saveJpg(roted)
         bitmap.recycle()
-        convertPlate(stringFromTest()).apply { callback(this) }
+        roted.recycle()
+        convertPlate(anpr()).apply { callback(this) }
     }
 
     private fun convertPlate(result: String): Plate? {
@@ -110,5 +115,5 @@ class AnprManager {
         return BitmapFactory.decodeStream(f)
     }
 
-    external fun stringFromTest(): String
+    external fun anpr(): String
 }

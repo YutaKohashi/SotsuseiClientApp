@@ -33,15 +33,24 @@
 
     </RelativeLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_below="@+id/container_toolbar"
         android:id="@+id/fragmentContainer"
         android:layout_width="315dp"
         android:layout_height="350dp"
+        android:padding="10dp"
         >
 
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:layout_width="300dp"
+            android:id="@+id/imageView"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"/>
+
         <TextView
-            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/numberTextView"
@@ -52,6 +61,6 @@
             <!--android:background="@color/bg_gray_dark"-->
             <!--android:layout_width="315dp"-->
             <!--android:layout_height="560dp"/>-->
-    </FrameLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

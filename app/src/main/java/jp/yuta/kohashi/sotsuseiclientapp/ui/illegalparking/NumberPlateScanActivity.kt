@@ -74,6 +74,7 @@ class NumberPlateScanActivity : BaseActivity() {
     }
 
     fun successScan(plate: Plate) {
+        Log.d("NumberPlateScanActivity","successScan")
         mRegularlyScheduler?.onPause()
         val intent = Intent()
         intent.putExtra("data", plate)
@@ -95,12 +96,10 @@ class NumberPlateScanActivity : BaseActivity() {
         }
 
         mRegularlyScheduler = RegularlyScheduler.Builder {
-            periodTime = 2000L
+            periodTime = 333L
             initialDelayTime = 1500L
             job = { mCameraView.getPreviewNonNullBitmap(callback) }
         }.build().start()
-
-
     }
 
 
