@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/DetectRegions.cpp" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/DetectRegions.h" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/DetectRegions.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/DetectRegions.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/OCR.cpp" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/OCR.h" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/Plate.cpp" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/Plate.h" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/Plate.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/evalOCR.cpp" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/trainOCR.cpp" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/app/src/main/cpp/anpr/trainSVM.cpp" charset="windows-1251" />
