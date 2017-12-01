@@ -3,6 +3,7 @@ package jp.yuta.kohashi.sotsuseiclientapp
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import com.squareup.leakcanary.LeakCanary
 import jp.yuta.kohashi.sotsuseiclientapp.ui.illegalparking.AnprManager
 import jp.yuta.kohashi.sotsuseiclientapp.utils.PrefUtil
 
@@ -19,6 +20,8 @@ class App : Application() {
         context = applicationContext
         AnprManager.init()
         PrefUtil.setUp(context)
+        if (LeakCanary.isInAnalyzerProcess(this))return
+        LeakCanary.install(this)
     }
 
     companion object {

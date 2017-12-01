@@ -103,7 +103,7 @@ class NumberPlateScanActivity : BaseActivity() {
     }
 
 
-    inner class AnprController() {
+    inner class AnprController {
         private val  anprManager:AnprManager
         init {
             anprManager = AnprManager()
