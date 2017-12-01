@@ -1,13 +1,6 @@
-/*****************************************************************************
-*   Number Plate Recognition using SVM and Neural Networks
-******************************************************************************
-*   by David Millбn Escrivб, 5th Dec 2012
-*   http://blog.damiles.com
-******************************************************************************
-*   Ch5 of the book "Mastering OpenCV with Practical Computer Vision Projects"
-*   Copyright Packt Publishing 2012.
-*   http://www.packtpub.com/cool-projects-with-opencv/book
-*****************************************************************************/
+//
+// Created by YutaKohashi on 2017/12/01.
+//
 
 #include "DetectRegions.h"
 
@@ -16,8 +9,6 @@ void DetectRegions::setFilename(string s) {
 }
 
 DetectRegions::DetectRegions() {
-    showSteps = false;
-    saveRegions = false;
 }
 
 bool DetectRegions::verifySizes(RotatedRect mr) {
@@ -28,16 +19,16 @@ bool DetectRegions::verifySizes(RotatedRect mr) {
     // float aspect=4.7272;
     float aspect = 2.00;
     //Set a min and max area. All other patchs are discarded
-    int min = 15 * aspect * 15; // minimum area
-    int max = 125 * aspect * 125; // maximum area
+    float min = 15 * aspect * 15; // minimum area
+    float max = 125 * aspect * 125; // maximum area
     //Get only patchs that match to a respect ratio.
     float rmin = aspect - aspect * error;
     float rmax = aspect + aspect * error;
 
-    int area = mr.size.height * mr.size.width;
-    float r = (float) mr.size.width / (float) mr.size.height;
+    float area = mr.size.height * mr.size.width;
+    float r = mr.size.width / mr.size.height;
     if (r < 1)
-        r = (float) mr.size.height / (float) mr.size.width;
+        r = mr.size.height / mr.size.width;
 
     if ((area < min || area > max) || (r < rmin || r > rmax)) {
         return false;
@@ -76,27 +67,14 @@ vector<Plate> DetectRegions::segment(Mat input) {
     //Finde vertical lines. Car plates have high density of vertical lines
     Mat img_sobel;
     Sobel(img_gray, img_sobel, CV_8U, 1, 0, 3, 1, 0, BORDER_DEFAULT);
-    if (showSteps) {
-        imshow("Sobel", img_sobel);
-        cvWaitKey(0);
-    }
 
     //threshold image
     Mat img_threshold;
     threshold(img_sobel, img_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-    if (showSteps) {
-        imshow("Threshold", img_threshold);
-        cvWaitKey(0);
-    }
-
     //Morphplogic operation close
     Mat element = getStructuringElement(MORPH_RECT,
                                         Size(17, 8));    // @f change size (17,3) -> (17,8)
     morphologyEx(img_threshold, img_threshold, CV_MOP_CLOSE, element);
-    if (showSteps) {
-        imshow("Close", img_threshold);
-        cvWaitKey(0);
-    }
 
     //Find contours of possibles plates
     vector<vector<Point> > contours;
@@ -138,7 +116,7 @@ vector<Plate> DetectRegions::segment(Mat input) {
         //get the min size between width and height
         float minSize = (rects[i].size.width < rects[i].size.height) ? rects[i].size.width
                                                                      : rects[i].size.height;
-        minSize = minSize - minSize * 0.5;
+        minSize = (float) (minSize - minSize * 0.5);
         //initialize rand and get 5 points around center for floodfill algorithm
         srand(time(NULL));
         //Initialize floodfill parameters and variables
@@ -155,21 +133,13 @@ vector<Plate> DetectRegions::segment(Mat input) {
                     CV_FLOODFILL_MASK_ONLY;
         for (int j = 0; j < NumSeeds; j++) {
             Point seed;
-            seed.x = rects[i].center.x + rand() % (int) minSize - (minSize / 2);
-            seed.y = rects[i].center.y + rand() % (int) minSize - (minSize / 2);
-/*
-	    if (showSteps) {
-		printf("#%02d seed = (%d, %d)\n", j, seed.x, seed.y);
-	    }
-*/
+            seed.x = (int) (rects[i].center.x + rand() % (int) minSize - (minSize / 2));
+            seed.y = (int) (rects[i].center.y + rand() % (int) minSize - (minSize / 2));
+
             circle(result, seed, 5, Scalar(0, 255, 255), -1);    // @f 1 -> 5
             int area = floodFill(input, mask, seed, Scalar(255, 0, 0), &ccomp,
                                  Scalar(loDiff, loDiff, loDiff), Scalar(upDiff, upDiff, upDiff),
                                  flags);
-        }
-        if (showSteps) {
-            imshow("MASK", mask);
-            cvWaitKey(0);
         }
 
         //Check new floodfill mask match for a correct patch.
@@ -184,7 +154,7 @@ vector<Plate> DetectRegions::segment(Mat input) {
         RotatedRect minRect = minAreaRect(pointsInterest);
 
         if (verifySizes(minRect)) {
-            // rotated rectangle drawing 
+            // rotated rectangle drawing
             Point2f rect_points[4];
             minRect.points(rect_points);
             for (int j = 0; j < 4; j++)
@@ -209,24 +179,16 @@ vector<Plate> DetectRegions::segment(Mat input) {
             getRectSubPix(img_rotated, rect_size, minRect.center, img_crop);
 
             Mat resultResized;
-            resultResized.create(72, 144, CV_8UC3);    // @f (33,144) -> (72,144)
+            resultResized.create(72, 144, CV_8UC3);
             resize(img_crop, resultResized, resultResized.size(), 0, 0, INTER_CUBIC);
             //Equalize croped image
             Mat grayResult;
             cvtColor(resultResized, grayResult, CV_BGR2GRAY);
             blur(grayResult, grayResult, Size(3, 3));
             grayResult = histeq(grayResult);
-            if (saveRegions) {
-                stringstream ss(stringstream::in | stringstream::out);
-                ss << "tmp/" << filename << "_" << i << ".jpg";
-                imwrite(ss.str(), grayResult);
-            }
+
             output.push_back(Plate(grayResult, minRect.boundingRect()));
         }
-    }
-    if (showSteps) {
-        imshow("Contours", result);
-        cvWaitKey(0);
     }
 
     return output;
@@ -234,7 +196,7 @@ vector<Plate> DetectRegions::segment(Mat input) {
 
 vector<Plate> DetectRegions::run(Mat input) {
 
-    //Segment image by white 
+    //Segment image by white
     vector<Plate> tmp = segment(input);
 
     //return detected and posibles regions

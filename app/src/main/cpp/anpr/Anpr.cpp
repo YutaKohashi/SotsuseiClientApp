@@ -2,27 +2,8 @@
 // Created by YutaKohashi on 2017/11/19.
 //
 
-#include <cv.h>
-#include <highgui.h>
-#include <cvaux.h>
-#include <ml.h>
-//
-#include <getopt.h>
-#include <iostream>
-#include <jni.h>
-#include <string>
-#include <vector>
-#include "OCR.h"
-#include "DetectRegions.h"
+#include "Anpr.h"
 
-using namespace std;
-using namespace cv;
-
-
-//**
-//region anpr
-//**
-//
 string getFilename(string s) {
 
     char sep = '/';
@@ -54,11 +35,7 @@ string tostr(const T &t) {
 }
 
 string anpr(char *filepath) {
-    int result;
     Mat input_image;
-
-    const string OCR_FILE_PATH = "/data/data/jp.yuta.kohashi.sotsuseiclientapp.debug/files/OCR.xml";
-    const string SVM_FILE_PATH = "/data/data/jp.yuta.kohashi.sotsuseiclientapp.debug/files/SVM.xml";
 
     input_image = imread(filepath, CV_LOAD_IMAGE_COLOR);
     if (!input_image.data) exit(0);
@@ -68,7 +45,6 @@ string anpr(char *filepath) {
     //Detect posibles plate regions
     DetectRegions detectRegions;
     detectRegions.setFilename(filename_whithoutExt);
-    detectRegions.saveRegions = true;
     vector<Plate> posible_regions = detectRegions.run(input_image);
 
     //SVM for each plate region to get valid car plates
@@ -106,7 +82,6 @@ string anpr(char *filepath) {
     }
 
     OCR ocr(OCR_FILE_PATH);
-    ocr.saveSegments = true;
 
     ocr.filename = filename_whithoutExt;
     for (int i = 0; i < plates.size(); i++) {
@@ -126,10 +101,6 @@ string anpr() {
     char *targetFilePath = (char *) "/data/data/jp.yuta.kohashi.sotsuseiclientapp.debug/files/testimg.jpg";
     return anpr(targetFilePath);
 }
-
-//**
-//endregion
-//**
 
 extern "C" JNIEXPORT jstring
 

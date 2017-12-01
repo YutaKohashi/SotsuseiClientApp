@@ -1,13 +1,6 @@
-/*****************************************************************************
-*   Number Plate Recognition using SVM and Neural Networks
-******************************************************************************
-*   by David Mill�n Escriv�, 5th Dec 2012
-*   http://blog.damiles.com
-******************************************************************************
-*   Ch5 of the book "Mastering OpenCV with Practical Computer Vision Projects"
-*   Copyright Packt Publishing 2012.
-*   http://www.packtpub.com/cool-projects-with-opencv/book
-*****************************************************************************/
+//
+// Created by YutaKohashi on 2017/12/01.
+//
 
 #include "Plate.h"
 
@@ -47,8 +40,8 @@ string Plate::str() {
         orderIndex[i] = aux_min;
         orderIndex[minIdx] = aux_i;
 
-        float aux_xi = xpositions[i];
-        float aux_xmin = xpositions[minIdx];
+        int aux_xi = (int)xpositions[i];
+        int aux_xmin = (int)xpositions[minIdx];
         xpositions[i] = aux_xmin;
         xpositions[minIdx] = aux_xi;
     }

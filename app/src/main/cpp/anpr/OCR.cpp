@@ -1,13 +1,6 @@
-/*****************************************************************************
-*   Number Plate Recognition using SVM and Neural Networks
-******************************************************************************
-*   by David Mill�n Escriv�, 5th Dec 2012
-*   http://blog.damiles.com
-******************************************************************************
-*   Ch5 of the book "Mastering OpenCV with Practical Computer Vision Projects"
-*   Copyright Packt Publishing 2012.
-*   http://www.packtpub.com/cool-projects-with-opencv/book
-*****************************************************************************/
+//
+// Created by YutaKohashi on 2017/12/01.
+//
 
 #include "OCR.h"
 
@@ -22,14 +15,10 @@ CharSegment::CharSegment(Mat i, Rect p) {
 }
 
 OCR::OCR() {
-    trained = false;
-    saveSegments = false;
     charSize = 20;
 }
 
 OCR::OCR(string trainFile) {
-    trained = false;
-    saveSegments = false;
     charSize = 20;
 
     //Read file storage.
@@ -212,39 +201,6 @@ Mat OCR::getVisualHistogram(Mat *hist, int type) {
     return imHist;
 }
 
-void OCR::drawVisualFeatures(Mat character, Mat hhist, Mat vhist, Mat lowData) {
-    Mat img(121, 121, CV_8UC3, Scalar(0, 0, 0));
-    Mat ch;
-    Mat ld;
-
-    cvtColor(character, ch, CV_GRAY2RGB);
-
-    resize(lowData, ld, Size(100, 100), 0, 0, INTER_NEAREST);
-    cvtColor(ld, ld, CV_GRAY2RGB);
-
-    Mat hh = getVisualHistogram(&hhist, HORIZONTAL);
-    Mat hv = getVisualHistogram(&vhist, VERTICAL);
-
-    Mat subImg = img(Rect(0, 101, 20, 20));
-    ch.copyTo(subImg);
-
-    subImg = img(Rect(21, 101, 100, 20));
-    hh.copyTo(subImg);
-
-    subImg = img(Rect(0, 0, 20, 100));
-    hv.copyTo(subImg);
-
-    subImg = img(Rect(21, 0, 100, 100));
-    ld.copyTo(subImg);
-
-    line(img, Point(0, 100), Point(121, 100), Scalar(0, 0, 255));
-    line(img, Point(20, 0), Point(20, 121), Scalar(0, 0, 255));
-
-    imshow("Visual Features", img);
-
-    cvWaitKey(0);
-}
-
 Mat OCR::features(Mat in, int sizeData) {
     //Histogram features
     Mat vhist = ProjectedHistogram(in, VERTICAL);
@@ -302,11 +258,9 @@ void OCR::train(Mat TrainData, Mat classes, int nlayers) {
 
     //Learn classifier
     ann.train(TrainData, trainClasses, weights);
-    trained = true;
 }
 
 int OCR::classify(Mat f) {
-    int result = -1;
     Mat output(1, numCharacters, CV_32FC1);
     ann.predict(f, output);
     Point maxLoc;
@@ -317,17 +271,6 @@ int OCR::classify(Mat f) {
     return maxLoc.x;
 }
 
-int OCR::classifyKnn(Mat f) {
-    int response = (int) knnClassifier.find_nearest(f, K);
-    return response;
-}
-
-void OCR::trainKnn(Mat trainSamples, Mat trainClasses, int k) {
-    K = k;
-    // learn classifier
-    knnClassifier.train(trainSamples, trainClasses, Mat(), false, K);
-}
-
 string OCR::run(Plate *input) {
     //Segment chars of plate
     vector<CharSegment> segments = segment(*input);
@@ -335,11 +278,6 @@ string OCR::run(Plate *input) {
     for (int i = 0; i < segments.size(); i++) {
         //Preprocess each char for all images have same sizes
         Mat ch = preprocessChar(segments[i].img);
-        if (saveSegments) {
-            stringstream ss(stringstream::in | stringstream::out);
-            ss << "tmpChars/" << filename << "_" << i << ".jpg";
-            imwrite(ss.str(), ch);
-        }
         //For each segment Extract Features
         Mat f = features(ch, 15);
         //For each segment feature Classify
