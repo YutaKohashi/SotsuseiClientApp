@@ -47,6 +47,10 @@ interface SotsuseiJsonApiService {
     @GET("/logout")
     fun getLogout(@Body sid:String)
 
+    // 従業員情報取得
+    @POST("/api/v1/employee/info")
+    fun postEmployeeInfo(@Body eid:Int): Observable<Model.Employee>
+
 
 //
 //    @POST("/login/")
@@ -62,7 +66,7 @@ interface SotsuseiJsonApiService {
 
     companion object {
 
-        private val BASE_URL = "http://172.22.124.149:8000"
+        private val BASE_URL = "http://172.22.124.132:8000"
 
         fun create(): SotsuseiJsonApiService {
 

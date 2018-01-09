@@ -18,10 +18,10 @@ import okhttp3.RequestBody
  * Project name : SotsuseiCameraApp
  * Date : 17 / 10 / 2017
  */
-object SotsuseiApiManager {
+object SotsuseiApiHelper {
 
-//    private var disposable: Disposable? = null
-    private val mCompositeDisposable:CompositeDisposable = CompositeDisposable()
+    //    private var disposable: Disposable? = null
+    private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
 
 
     private val mSotsuseiApiService by lazy {
@@ -76,6 +76,24 @@ object SotsuseiApiManager {
                     callback.invoke(body, false, ApiException.ErrorType.ERROR_TYPE_UNKNOWN)
                 }, { error ->
                     callback.invoke(null, true, ApiException.ErrorType.ERROR_TYPE_API_STATUS)
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
+    /**
+     * 従業員情報取得
+     */
+    fun postEmployeeInfo(eId: Int, callback: Callback<Model.Employee>) {
+        val eid = 20001
+        val disposable: Disposable = mSotsuseiApiService.postEmployeeInfo(eid).
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribe({ body: Model.Employee? ->
+                    callback.onSuccess(body)
+                }, { error ->
+                    callback.onFailure(ApiException.error(error))
+                }, {
+
                 })
         mCompositeDisposable.add(disposable)
     }
