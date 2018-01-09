@@ -1,5 +1,7 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.ColorRes
 import android.support.annotation.LayoutRes
@@ -22,9 +24,14 @@ abstract class BaseFragment : Fragment() {
     abstract val mLayoutRes: Int
         @LayoutRes get
 
+    inline fun<reified T:Activity> Fragment.activityStart(bundle: Bundle? = null){
+        val intent = Intent(activity, T::class.java)
+        bundle?.let { intent.putExtras(it) }
+        startActivity(intent)
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater!!.inflate(mLayoutRes, container, false)
-
     }
 
     override fun onResume() {

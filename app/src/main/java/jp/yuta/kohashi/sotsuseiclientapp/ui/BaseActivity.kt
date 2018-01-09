@@ -1,6 +1,8 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.ColorRes
 import android.support.annotation.LayoutRes
@@ -59,6 +61,12 @@ abstract class BaseActivity : AppCompatActivity() {
      * setEventメソッドを実行するか
      */
     protected var isEvent: Boolean = true
+
+    inline fun<reified T:Activity> Fragment.activityStart(bundle: Bundle? = null){
+        val intent = Intent(activity, T::class.java)
+        bundle?.let { intent.putExtras(it) }
+        startActivity(intent)
+    }
 
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
