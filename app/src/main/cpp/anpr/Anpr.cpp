@@ -98,7 +98,7 @@ string anpr(char *filepath) {
 }
 
 string anpr() {
-    char *targetFilePath = (char *) "/data/data/jp.yuta.kohashi.sotsuseiclientapp.debug/files/testimg.jpg";
+    char *targetFilePath = (char *) "/data/data/jp.yuta.kohashi.sotsuseiclientapp/files/testimg.jpg";
     return anpr(targetFilePath);
 }
 

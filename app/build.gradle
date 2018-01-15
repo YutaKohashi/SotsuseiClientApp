@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.android.application'
+//apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 26
@@ -66,8 +67,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.github.bumptech.glide:glide:4.2.0'
 //    compile "com.google.android.gms:play-services-location:$google_services_version"
-    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
+//    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+//    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
     compile "com.google.firebase:firebase-core:$google_dev_services_version"
     compile "com.google.firebase:firebase-messaging:$google_dev_services_version"
 
