@@ -9,6 +9,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.NotificationCompat
+import android.util.Log
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.login.LoginActivity
 
@@ -18,26 +19,32 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.login.LoginActivity
  * Project name : SotsuseiClientApp
  * Date : 09 / 01 / 2018
  */
-class MyFirebaseMessagingService : FirebaseMessagingService(){
+class MyFirebaseMessagingService : FirebaseMessagingService() {
+    private val TAG = MyFirebaseMessagingService::class.java.simpleName
+
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
-
+        Log.d(TAG, "onMessageReceived")
         // Notification Messageを受信したことはRemoteMessage#getNotification()が非null値になることで判別
-        if(remoteMessage != null && remoteMessage.notification != null){
+        if (remoteMessage != null && remoteMessage.notification != null) {
+            Log.d(TAG, "get notification message")
             val title = remoteMessage.notification!!.title
-            val body = remoteMessage.notification!!.body
+            val message = remoteMessage.notification!!.body
             // TODO:通知
+            if (title != null && message != null)
+                sendNotification(title, message)
         }
 
         // dataメッセージングハンドリング
-        if(remoteMessage?.data != null){
+        if (remoteMessage?.data != null) {
+            Log.d(TAG, "get data message")
             val data = remoteMessage.data
-            val customTitle = data["custom_title"]
-            val customBody = data["custom_body"]
+            val title = data["title"]
+            val message = data["message"]
 
-            if(customTitle != null && customBody != null)
-                // show notification
-                sendNotification(customTitle,customBody)
+            if (title != null && message != null)
+            // show notification
+                sendNotification(title, message)
         }
     }
 
