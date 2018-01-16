@@ -27,7 +27,7 @@ class NumberPlateScanActivity : BaseActivity() {
     override val contentViewFromRes: Int?
         get() = R.layout.activity_number_plate_scan
 
-    private lateinit var mCameraView: CameraView
+//    private lateinit var mCameraView: CameraView
     private var mRegularlyScheduler: RegularlyScheduler? = null
     private lateinit var mAnprController: AnprController
 
@@ -43,9 +43,9 @@ class NumberPlateScanActivity : BaseActivity() {
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState, false)
-        mCameraView = CameraView(this)
-        mCameraView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
-        cameraViewContainer.addView(mCameraView)
+//        mCameraView = CameraView(this)
+//        mCameraView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+//        cameraViewContainer.addView(mCameraView)
         mAnprController = AnprController()
         setEvent()
     }
@@ -104,10 +104,7 @@ class NumberPlateScanActivity : BaseActivity() {
 
 
     inner class AnprController {
-        private val  anprManager:AnprManager
-        init {
-            anprManager = AnprManager()
-        }
+        private val  anprManager:AnprManager = AnprManager()
 
         private var callback: (Plate?) -> Unit = { plate ->
             Log.d("AnprController","callback")

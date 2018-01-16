@@ -10,6 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <jp.yuta.kohashi.sotsuseiclientapp.ui.view.CameraView
+            android:id="@+id/mCameraView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
         <!--<jp.yuta.kohashi.sotsuseiclientapp.ui.view.CameraView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
