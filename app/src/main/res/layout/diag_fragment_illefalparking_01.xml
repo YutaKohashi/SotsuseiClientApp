@@ -1,130 +1,312 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp">
-
-    <LinearLayout
-        android:id="@+id/number_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:layout_margin="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/number_1"
-                    android:src="@drawable/img_number2" />
-
-                <TextView
-                    android:id="@+id/number_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="center"
-                    android:text="自家用普通自動車"
-                    android:textColor="@color/text_gray_dark" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_margin="5dp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/number_2"
-                    android:src="@drawable/img_number4" />
-
-                <TextView
-                    android:id="@+id/number_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="center"
-                    android:text="事業用普通自動車"
-                    android:textColor="@color/text_gray_dark" />
-            </RelativeLayout>
-
-        </LinearLayout>
+    android:layout_height="wrap_content">
 
 
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_margin="5dp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <ImageView
-
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/number_3"
-                    android:src="@drawable/img_number3" />
-
-                <TextView
-                    android:id="@+id/number_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="center"
-                    android:text="自家用軽自動車"
-                    android:textColor="@color/text_gray_dark" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_margin="5dp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/number_4"
-                    android:src="@drawable/img_number1" />
-
-                <TextView
-                    android:id="@+id/number_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="center"
-                    android:text="事業用軽自動車"
-                    android:textColor="@color/text_gray_dark" />
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
+    <!--ツールバー-->
     <RelativeLayout
-        android:layout_below="@+id/number_container"
-        android:id="@+id/bottom_container"
+        android:id="@+id/container_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/bg_main_running">
 
+        <ImageButton
+            android:id="@+id/closeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/ic_close"
+            android:tint="@color/ic_light_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="違法駐車登録"
+            android:textColor="@color/text_gray_light"
+            android:textSize="@dimen/text_size_medium" />
+
+        <Button
+            android:id="@+id/finish_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="211dp"
+            android:text="完了" />
 
     </RelativeLayout>
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_below="@+id/container_toolbar"-->
+    <!--android:padding="10dp"-->
+    <!--android:id="@+id/number_container"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="100dp"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1">-->
+
+    <!--<ImageView-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_above="@+id/number_1"-->
+    <!--android:src="@drawable/img_number2" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/number_1"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:gravity="center"-->
+    <!--android:text="自家用普通自動車"-->
+    <!--android:textColor="@color/text_gray_dark" />-->
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1">-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_above="@+id/number_2"-->
+    <!--android:src="@drawable/img_number4" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/number_2"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:gravity="center"-->
+    <!--android:text="事業用普通自動車"-->
+    <!--android:textColor="@color/text_gray_dark" />-->
+    <!--</RelativeLayout>-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--<LinearLayout-->
+
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="100dp"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1">-->
+
+    <!--<ImageView-->
+
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_above="@+id/number_3"-->
+    <!--android:src="@drawable/img_number3" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/number_3"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:gravity="center"-->
+    <!--android:text="自家用軽自動車"-->
+    <!--android:textColor="@color/text_gray_dark" />-->
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1">-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_above="@+id/number_4"-->
+    <!--android:src="@drawable/img_number1" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/number_4"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:gravity="center"-->
+    <!--android:text="事業用軽自動車"-->
+    <!--android:textColor="@color/text_gray_dark" />-->
+    <!--</RelativeLayout>-->
+
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+
+    <FrameLayout
+        android:id="@+id/number_container"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/container_toolbar"
+        android:orientation="horizontal"
+
+        android:weightSum="5">
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/container01"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <FrameLayout
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center"
+                    android:background="#595959">
+
+                    <View
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="#f5f5f5" />
+
+                </FrameLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/container02"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <FrameLayout
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center"
+                    android:background="#595959">
+
+                    <View
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="#FEC117" />
+
+                </FrameLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/container03"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+
+
+                <FrameLayout
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center"
+                    android:background="#595959">
+
+                    <View
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="#164525" />
+
+                </FrameLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/container04"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/darker_gray"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/container05"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/darker_gray"/>
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/number_container">
+
+        <RelativeLayout
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:background="#ededed">
+
+            <jp.yuta.kohashi.sotsuseiclientapp.ui.view.NumberPlateView
+                android:layout_width="match_parent"
+                android:id="@+id/numberPlateView"
+                android:layout_height="match_parent"/>
+
+        </RelativeLayout>
+        <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--android:src="@drawable/bg_empty_number"/>-->
+
+    </RelativeLayout>
+
+    <Button
+        android:text="登録"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/defineButton"
+        android:layout_below="@+id/bottom_container"/>
 </RelativeLayout>

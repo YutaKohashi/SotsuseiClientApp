@@ -1,26 +1,63 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.illegalparking
 
+import android.content.Context
 import android.hardware.camera2.CameraCaptureSession
 import android.os.Bundle
+import android.support.annotation.LayoutRes
+import android.util.Log
 import android.view.View
 import jp.yuta.kohashi.sotsuseiclientapp.R
+import jp.yuta.kohashi.sotsuseiclientapp.netowork.model.Model
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseDialogFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.view.CameraView
-import kotlinx.android.synthetic.main.diag_fragment_illegalparking.*
+import jp.yuta.kohashi.sotsuseiclientapp.ui.view.NumberPlateView
+import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
+import kotlinx.android.synthetic.main.diag_fragment_illefalparking_01.*
+import okhttp3.internal.Util
+import java.util.*
+
 
 /**
  * Author : yutakohashi
  * Project name : SotsuseiClientApp
  * Date : 09 / 11 / 2017
  */
-class IllegalParkingDialogFragment : BaseDialogFragment() {
-    override var layoutRes: Int = R.layout.diag_fragment_illegalparking
+class IllegalParkingDialogFragment : BaseDialogFragment(), View.OnClickListener {
+    private val TAG = IllegalParkingDialogFragment::class.java.simpleName
+
+    //    override var layoutRes: Int = R.layout.diag_fragment_illegalparking
+    override var layoutRes: Int = R.layout.diag_fragment_illefalparking_01
 
     override var NO_TITLE: Boolean = true
 
-    interface Callback:BaseCallback{
-        fun onPositive()
+    private var mCallback:Callback? = null
+
+    private val mColorContainerIds by lazy {
+        mutableListOf<@LayoutRes Int>().apply {
+            add(R.id.container01) // 白
+            add(R.id.container02) // 黄色
+            add(R.id.container03) // 緑
+            add(R.id.container04)
+            add(R.id.container05)
+        }
+    }
+
+    /**
+     * ナンバプレートのカラー・タイプ
+     */
+    enum class ColorType {
+        DEFAULT,
+        YELLOW,
+        GREEN,
+        BLUE,
+        BLACK
+    }
+
+    data class NumberPlate(val shiyohonkyochi: String, val bunruibango: String, val jigyoyohanbetsumoji: String, val ichirenshiteibango: String, val cartype: Int, val colortype: Int, val makertype: Int, val comment: String, val datetime: String)
+
+    interface Callback : BaseCallback {
+        fun onPositive(numberPlate: NumberPlate)
         fun onCancel()
     }
 
@@ -35,12 +72,52 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         isCancelable = true
 
-        val plate:Plate = arguments.getParcelable(KEY_PLATE)
-        numberTextView.text = plate.number.toString()
-        imageView.setImageBitmap(plate.bmp)
-        closeButton.setOnClickListener {
+        val plate: Plate = arguments.getParcelable(KEY_PLATE)
+        // 取得したナンバー情報をviewに適用
+        numberPlateView.applyNumber(plate.number)
+
+        mColorContainerIds.forEach { id -> view?.findViewById<View>(id)?.setOnClickListener(this@IllegalParkingDialogFragment) }
+
+        closeButton.setOnClickListener { dismiss() }
+
+        // 決定ボタン
+        defineButton.setOnClickListener {
+            val numberPlate = NumberPlate(
+                    "",
+                    "",
+                    "",
+                    "",
+                    0,
+                    0,
+                    0,
+                    "",
+                    Date().time.toString() // 現在時刻を設定
+
+            )
+            mCallback?.onPositive(numberPlate)
             dismiss()
         }
+    }
+
+    /**
+     * onAttach共通処理
+     */
+    override fun onAttachContext(context: Context) {
+        Log.d(TAG, "onAttach")
+        var callback: Any? = targetFragment
+        if (callback == null) {
+            callback = context
+            if (callback == null || callback !is Callback) {
+                throw IllegalStateException("failure:: can't get 'Callback' in onAttach")
+            }
+        }
+        mCallback = callback as Callback
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d(TAG, "onDetach")
+        mCallback = null
     }
 
     override fun onResume() {
@@ -52,12 +129,24 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
 
     }
 
+    /**
+     * click color view
+     */
+    override fun onClick(v: View?) {
+        v?.setBackgroundColor(ResUtil.color(android.R.color.black))
+
+        // 押下されたボタン以外の背景を初期化
+        mColorContainerIds.filter { v?.id != it }.forEach { id ->
+            v?.rootView?.findViewById<View>(id)?.setBackgroundColor(ResUtil.color(android.R.color.white))
+        }
+    }
+
     class Builder private constructor() {
 
         var activity: BaseDialogFragment? = null
         var parentFragment: BaseFragment? = null
-        var number:Int = -1
-        var plate:Plate? = null
+        var number: Int = -1
+        var plate: Plate? = null
         var requestCode: Int = 1000
 
         constructor(init: Builder.() -> Unit) : this() {
@@ -65,7 +154,7 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
         }
 
         fun requestCode(action: Builder.() -> Int) = apply { requestCode = action() }
-        fun <T> activity(action: Builder.() -> T)  where T : BaseDialogFragment, T : Callback = apply { activity = action() }
+        fun <T> activity(action: Builder.() -> T) where T : BaseDialogFragment, T : Callback = apply { activity = action() }
         fun <T> parentFragment(action: Builder.() -> T) where T : BaseFragment, T : Callback = apply { parentFragment = action() }
         fun number(action: Builder.() -> Int) = apply { number = action() }
         fun plate(action: Builder.() -> Plate) = apply { plate = action() }
@@ -80,8 +169,8 @@ class IllegalParkingDialogFragment : BaseDialogFragment() {
                 } else {
                     it.mTarget = parentFragment
                 }
-                bundle.putInt(KEY_NUMBER,number)
-                bundle.putParcelable(KEY_PLATE,plate)
+                bundle.putInt(KEY_NUMBER, number)
+                bundle.putParcelable(KEY_PLATE, plate)
                 it.arguments = bundle
             }
         }
