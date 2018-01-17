@@ -1,5 +1,6 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -15,7 +16,9 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.running.RunningFragment
 import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 import android.R.attr.data
-
+import android.os.Build
+import jp.yuta.kohashi.sotsuseiclientapp.utils.permission.OnPermissionCallback
+import jp.yuta.kohashi.sotsuseiclientapp.utils.permission.PermissionHelper
 
 
 /**
@@ -24,7 +27,7 @@ import android.R.attr.data
  * Date : 29 / 09 / 2017
  */
 
-class HomeActivity : BaseDrawerActivity() {
+class HomeActivity : BaseDrawerActivity(),OnPermissionCallback {
 
     companion object : StartActivity<HomeActivity> {
         override fun start(activity: Activity) = super.start(activity, HomeActivity::class.java)
@@ -38,6 +41,12 @@ class HomeActivity : BaseDrawerActivity() {
 
     private lateinit var mNavigationButton: View
 
+    private lateinit var mPermissionHelper: PermissionHelper
+
+    private val REQUEST_PERMISSIONS: ArrayList<String> = arrayListOf<String>().apply {
+        add(Manifest.permission.CAMERA)
+    }
+
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState,false)
@@ -47,7 +56,26 @@ class HomeActivity : BaseDrawerActivity() {
         mContainerView.bringChildToFront(mNavigationButton)
         mContainerView.requestLayout()
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mPermissionHelper = PermissionHelper.instance(this).setForceAccepting(true)
+
+            mPermissionHelper.request(REQUEST_PERMISSIONS)
+        }
+
         setEvent()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val uploadType = supportFragmentManager.findFragmentById(mContainerView.id)
+        uploadType?.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) mPermissionHelper.onActivityResult(requestCode)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            mPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
 
@@ -69,10 +97,32 @@ class HomeActivity : BaseDrawerActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val uploadType = supportFragmentManager.findFragmentById(mContainerView.id)
+    override fun onGrantedPermission(permissionName: Array<String>) {
+    }
 
-        uploadType?.onActivityResult(requestCode, resultCode, data)
-        super.onActivityResult(requestCode, resultCode, data)
+    override fun onDeniedPermission(permissionName: Array<String>) {
+    }
+
+    override fun onPreGrantedPermission(permissionsName: String) {
+    }
+
+    override fun onNeedExplanationPermission(permissionName: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            mPermissionHelper.requestAfterExplanation(REQUEST_PERMISSIONS)
+    }
+
+    override fun onReallyDeniedPermission(permissionName: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            Handler(Looper.getMainLooper()).postDelayed({
+                try {
+                    mPermissionHelper.openMyApplicationSettings()
+                } catch (e: Exception) {
+
+                }
+            }, 2300)
+
+    }
+
+    override fun onNoNeededPermission() {
     }
 }

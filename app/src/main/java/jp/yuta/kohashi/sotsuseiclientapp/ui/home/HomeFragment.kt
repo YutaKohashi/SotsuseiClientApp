@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import jp.yuta.kohashi.sotsuseiclientapp.R
+import jp.yuta.kohashi.sotsuseiclientapp.netowork.FirebaseHelper
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.running.RunningFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.view.Circle
@@ -47,6 +48,10 @@ class HomeFragment : BaseFragment() {
             }
 
             Handler(Looper.getMainLooper()).postDelayed({
+                // 店舗IDでトピックに登録
+                val storeId = "sample"
+                FirebaseHelper.subscribeToTopic(storeId)
+
                 (activity as HomeActivity).replaceFragmentWithFade(RunningFragment())
             }, 400)
 

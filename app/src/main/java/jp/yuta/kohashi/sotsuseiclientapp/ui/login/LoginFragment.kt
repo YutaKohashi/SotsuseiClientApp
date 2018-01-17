@@ -26,9 +26,6 @@ class LoginFragment:BaseFragment(){
     override fun setEvent() {
         loginButton.setOnClickListener {
             // TODO ログイン処理
-            val storeId = "sample"
-            // 店舗IDでトピックに登録
-            FirebaseHelper.subscribeToTopic(storeId)
 //            HomeActivity.start(activity)
             activityStart<HomeActivity>()
             activity.finish()
