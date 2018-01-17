@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import jp.yuta.kohashi.sotsuseiclientapp.R
+import jp.yuta.kohashi.sotsuseiclientapp.netowork.FirebaseHelper
 import jp.yuta.kohashi.sotsuseiclientapp.service.SotsuseiClientAppService
 import jp.yuta.kohashi.sotsuseiclientapp.service.StateResult
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
@@ -29,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_running.*
  */
 
 class RunningFragment : BaseFragment() ,IllegalParkingDialogFragment.Callback{
-
+    private val TAG = RunningFragment::class.java.simpleName
 
     override val mLayoutRes: Int
         get() = R.layout.fragment_running
@@ -65,6 +67,10 @@ class RunningFragment : BaseFragment() ,IllegalParkingDialogFragment.Callback{
             }
 
             Handler(Looper.getMainLooper()).postDelayed({
+                // 店舗IDでトピックに登録解除
+                val storeId = "sample"
+                FirebaseHelper.unsubscribeFromTopic(storeId)
+
                 popBackStack()
             }, 400)
         }
@@ -74,7 +80,11 @@ class RunningFragment : BaseFragment() ,IllegalParkingDialogFragment.Callback{
         }
 
         shutterButton.setOnClickListener {
+            IllegalParkingDialogFragment.create {
+                parentFragment = this@RunningFragment
+                plate = Plate().apply { number = 2342 }
 
+            }.show()
         }
     }
 
@@ -98,8 +108,8 @@ class RunningFragment : BaseFragment() ,IllegalParkingDialogFragment.Callback{
         }
     }
 
-    override fun onPositive() {
-
+    override fun onPositive(numberPlate: IllegalParkingDialogFragment.NumberPlate) {
+        Log.d(TAG, "onPositive")
     }
 
     override fun onCancel() {

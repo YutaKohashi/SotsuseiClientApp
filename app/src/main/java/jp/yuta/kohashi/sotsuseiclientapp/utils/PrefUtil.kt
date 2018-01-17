@@ -25,6 +25,13 @@ object PrefUtil {
         get() = prefs.getString(KEY_USER_PASS, "")
         set(value) {prefs.edit().putString(KEY_USER_PASS, value).apply()}
 
+    var tenpoId:String
+        get() = prefs.getString(KEY_TENPO_ID,"")
+        set(value){prefs.edit().putString(KEY_TENPO_ID,value).apply()}
+
+    var tenpoPass:String
+        get() = prefs.getString(KEY_TENPO_PASS,"")
+        set(value){prefs.edit().putString(KEY_TENPO_PASS,value).apply()}
 
     private val KEY_USER_ID = "user_id"
     private val KEY_USER_PASS = "user_pass"
