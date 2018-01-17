@@ -84,7 +84,7 @@ object SotsuseiApiHelper {
      * 従業員情報取得
      */
     fun postEmployeeInfo(eId: Int, callback: Callback<Model.Employee>) {
-        val eid = 20001
+        val eid = 20001 // TODO
         val disposable: Disposable = mSotsuseiApiService.postEmployeeInfo(eid).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
@@ -97,6 +97,24 @@ object SotsuseiApiHelper {
                 })
         mCompositeDisposable.add(disposable)
     }
+
+    /**
+     *　ナンバープレートの登録
+     */
+    fun postNumberPlate(car:Model.NumberPlate,callback:Callback<Model.NumberPlate>){
+        val disposable:Disposable = mSotsuseiApiService.postNumberPlate(car.sid, car.humanid,car.imageid,car.shiyohonkyochi,car.bunruibango,car.jigyoyohanbetsumoji,car.ichirenshiteibango,car.cartype,car.colortype,car.makertype, car.comment, car.datetime).
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribe({ body: Model.NumberPlate? ->
+                    callback.onSuccess(body)
+                }, {error ->
+                    callback.onFailure(ApiException.error(error))
+                }, {
+
+                })
+        mCompositeDisposable.add(disposable)
+
+     }
 
 
     fun dispose() {

@@ -30,7 +30,6 @@ interface SotsuseiJsonApiService {
     @POST("/api/v1/employee/login")
     fun postEmployeeLogin(@Body sId: String, @Body password: String): Observable<Model.Result>
 
-
     // ログアウト
     @GET("/api/v1/logout")
     fun getLogout(): Observable<Model.Result>
@@ -38,8 +37,6 @@ interface SotsuseiJsonApiService {
     @Multipart
     @POST("/api/v1/image")
     fun postImage(@Part image: MultipartBody.Part, @Part("imageId") storeId: RequestBody): Observable<Model.Result>
-
-
 
     @POST("")
     fun postCaptureImage(@Body sId:String)
@@ -50,6 +47,11 @@ interface SotsuseiJsonApiService {
     // 従業員情報取得
     @POST("/api/v1/employee/info")
     fun postEmployeeInfo(@Body eid:Int): Observable<Model.Employee>
+
+    // ナンバープレート登録
+    @POST("/api/v1/numberplate")
+    fun postNumberPlate(@Body sid:Int, @Body humanid:String,@Body imageid:String,@Body shiyohonkyochi:String,@Body bunruibango:String,@Body jigyoyohanbetsumoji:String,@Body ichirenshiteibango:String,@Body cartype:Int,@Body colortype:Int,@Body makertype:Int, @Body comment:String, @Body datetime:String):Observable<Model.NumberPlate>
+
 
 
 //
