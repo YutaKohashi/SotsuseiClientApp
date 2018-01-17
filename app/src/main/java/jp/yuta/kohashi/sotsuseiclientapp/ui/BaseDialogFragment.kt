@@ -99,7 +99,7 @@ abstract class BaseDialogFragment:DialogFragment(){
     /**
      * onAttach共通処理
      */
-    private fun onAttachContext(context: Context) {
+    open fun onAttachContext(context: Context) {
         Log.d(TAG, "onAttach")
         var callback: Any? = targetFragment
         if (callback == null) {
