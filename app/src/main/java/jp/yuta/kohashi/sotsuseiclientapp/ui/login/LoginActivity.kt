@@ -1,6 +1,7 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.login
 
 import android.app.Activity
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
@@ -18,8 +19,15 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
     }
 
 
-    override val fragment: Fragment? = LoginFragment()
+    override val fragment: Fragment? = StoreLoginFragment()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if(intent.getBooleanExtra("successLogout",false)){
+            showSnackBar("ログアウトしました",500)
+            intent.putExtra("successLogout",false)
+        }
+    }
     override fun setEvent() {
 
     }
