@@ -6,15 +6,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
-import android.os.HandlerThread
 import android.util.Log
-import android.widget.FrameLayout
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.RegularlyScheduler
 import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivityForResult
-import jp.yuta.kohashi.sotsuseiclientapp.ui.view.CameraView
 import kotlinx.android.synthetic.main.activity_number_plate_scan.*
 
 /**
