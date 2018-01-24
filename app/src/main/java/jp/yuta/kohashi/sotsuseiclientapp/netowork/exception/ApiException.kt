@@ -49,6 +49,7 @@ class ApiException(errorType: ErrorType) : IOException() {
     }
 
     enum class ErrorType(num: Int) {
+        ERROR_NO(0),
         ERROR_TYPE_UNKNOWN(0),
         ERROR_TYPE_API_STATUS(1),
         ERROR_TYPE_HTTP_STATUS(2),
