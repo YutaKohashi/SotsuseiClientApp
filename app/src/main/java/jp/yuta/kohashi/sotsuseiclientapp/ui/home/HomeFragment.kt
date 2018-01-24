@@ -13,6 +13,7 @@ import jp.yuta.kohashi.sotsuseiclientapp.netowork.FirebaseHelper
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.running.RunningFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.view.Circle
+import jp.yuta.kohashi.sotsuseiclientapp.utils.PrefUtil
 import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -30,7 +31,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as HomeActivity).navigationView.setBackgroundColor(ResUtil.color(R.color.bg_main))
+        (activity as HomeActivity).navigationView.setBackgroundColor(ResUtil.color(R.color.colorPrimaryDark))
     }
 
     override fun setEvent() {
@@ -49,7 +50,8 @@ class HomeFragment : BaseFragment() {
 
             Handler(Looper.getMainLooper()).postDelayed({
                 // 店舗IDでトピックに登録
-                val storeId = "sample"
+//                val storeId = "sample"
+                val storeId = PrefUtil.storeId
                 FirebaseHelper.subscribeToTopic(storeId)
 
                 (activity as HomeActivity).replaceFragmentWithFade(RunningFragment())

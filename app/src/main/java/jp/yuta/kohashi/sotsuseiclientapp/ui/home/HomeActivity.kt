@@ -3,20 +3,30 @@ package jp.yuta.kohashi.sotsuseiclientapp.ui.home
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.app.Fragment
+import android.view.MenuItem
 import android.view.View
 import jp.yuta.kohashi.sotsuseiclientapp.R
+import jp.yuta.kohashi.sotsuseiclientapp.netowork.SotsuseiApiHelper
+import jp.yuta.kohashi.sotsuseiclientapp.netowork.exception.ApiException
+import jp.yuta.kohashi.sotsuseiclientapp.netowork.model.Model
 import jp.yuta.kohashi.sotsuseiclientapp.service.SotsuseiClientAppService
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseDrawerActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
+import jp.yuta.kohashi.sotsuseiclientapp.ui.debug.DebugActivity
+import jp.yuta.kohashi.sotsuseiclientapp.ui.info.InfoEmpActivity
+import jp.yuta.kohashi.sotsuseiclientapp.ui.info.InfoTenpoActivity
+import jp.yuta.kohashi.sotsuseiclientapp.ui.login.LoginActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.running.RunningFragment
+import jp.yuta.kohashi.sotsuseiclientapp.utils.NetworkUtil
+import jp.yuta.kohashi.sotsuseiclientapp.utils.PrefUtil
 import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
-import android.R.attr.data
-import android.os.Build
 import jp.yuta.kohashi.sotsuseiclientapp.utils.permission.OnPermissionCallback
 import jp.yuta.kohashi.sotsuseiclientapp.utils.permission.PermissionHelper
 
@@ -61,10 +71,24 @@ class HomeActivity : BaseDrawerActivity(),OnPermissionCallback {
 
             mPermissionHelper.request(REQUEST_PERMISSIONS)
         }
-
+        if(intent.getBooleanExtra("successLogin",false)) {
+            showSnackBar("ログインしました",700)
+            intent.putExtra("successLogin",false)
+        }
         setEvent()
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_01 -> activityStart<InfoTenpoActivity>()
+            R.id.item_02 -> activityStart<InfoEmpActivity>()
+            R.id.item_04 -> logout()
+            R.id.item_debug -> activityStart<DebugActivity>()
+        }
+        return super.onNavigationItemSelected(item)
+    }
+
+//
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val uploadType = supportFragmentManager.findFragmentById(mContainerView.id)
         uploadType?.onActivityResult(requestCode, resultCode, data)
@@ -124,5 +148,50 @@ class HomeActivity : BaseDrawerActivity(),OnPermissionCallback {
     }
 
     override fun onNoNeededPermission() {
+    }
+
+    private fun logout(){
+        // サービスを停止
+        SotsuseiClientAppService.stop()
+
+        if(!NetworkUtil.isConnectNetwork()) {
+            PrefUtil.empToken = ""
+            activityStart<LoginActivity>(Bundle().apply { putBoolean("successLogout",true) })
+            finishAffinity()
+            return
+        }
+        val prog = ProgressDialog(this)
+        prog.setMessage("ログアウト中...")
+        prog.setCancelable(false)
+        prog.show()
+
+        val token = PrefUtil.empToken
+        SotsuseiApiHelper.postRevocationToken(token,
+                object : SotsuseiApiHelper.Callback<Model.DefaultResponse> {
+                    override fun onSuccess(body: Model.DefaultResponse?) {
+                        if (body != null) {
+
+                        } else {
+                            showSnackBar("error")
+                        }
+                        prog.dismiss()
+                        PrefUtil.empToken = ""
+                        activityStart<LoginActivity>(Bundle().apply { putBoolean("successLogout",true) })
+                        finishAffinity()
+                    }
+
+                    override fun onFailure(e: ApiException) {
+                        showSnackBar("error")
+                        prog.dismiss()
+                        PrefUtil.empToken = ""
+                        activityStart<LoginActivity>(Bundle().apply { putBoolean("successLogout",true) })
+                        finishAffinity()
+                    }
+                })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SotsuseiApiHelper.dispose()
     }
 }

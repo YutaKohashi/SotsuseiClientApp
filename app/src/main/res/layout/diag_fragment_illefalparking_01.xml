@@ -169,107 +169,143 @@
         android:weightSum="5">
 
         <LinearLayout
-            android:layout_gravity="center"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="horizontal">
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingTop="5dp">
 
             <FrameLayout
-                android:id="@+id/container01"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1">
+
+                <FrameLayout
+                    android:background="@android:color/black"
+                    android:id="@+id/container01"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center">
+
+                    <FrameLayout
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center"
+                        android:background="#595959">
+
+                        <View
+
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:background="#f5f5f5" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+            </FrameLayout>
+
+
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
                 <FrameLayout
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center"
-                    android:background="#595959">
+                    android:id="@+id/container02"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center">
 
-                    <View
-
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                    <FrameLayout
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:layout_gravity="center"
-                        android:background="#f5f5f5" />
+                        android:background="#595959">
 
+                        <View
+
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:background="#FEC117" />
+
+                    </FrameLayout>
                 </FrameLayout>
+
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/container02"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
                 <FrameLayout
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center"
-                    android:background="#595959">
+                    android:id="@+id/container03"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center">
 
-                    <View
-
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                    <FrameLayout
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
                         android:layout_gravity="center"
-                        android:background="#FEC117" />
+                        android:background="#595959">
 
+                        <View
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:background="#164525" />
+
+                    </FrameLayout>
                 </FrameLayout>
+
             </FrameLayout>
 
+
             <FrameLayout
-                android:id="@+id/container03"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
-
-
 
                 <FrameLayout
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center"
-                    android:background="#595959">
+                    android:id="@+id/container04"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center">
 
-                    <View
-
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                    <FrameLayout
                         android:layout_gravity="center"
-                        android:background="#164525" />
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="#595959">
 
+                        <View
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:background="#3e3e3e" />
+                    </FrameLayout>
                 </FrameLayout>
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/container04"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <View
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:background="@android:color/darker_gray"/>
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/container05"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:visibility="gone">
 
                 <View
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:background="@android:color/darker_gray"/>
+                    android:background="@android:color/darker_gray" />
             </FrameLayout>
 
         </LinearLayout>
@@ -289,9 +325,9 @@
             android:background="#ededed">
 
             <jp.yuta.kohashi.sotsuseiclientapp.ui.view.NumberPlateView
-                android:layout_width="match_parent"
                 android:id="@+id/numberPlateView"
-                android:layout_height="match_parent"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
         <!--<ImageView-->
@@ -303,10 +339,10 @@
     </RelativeLayout>
 
     <Button
-        android:text="登録"
-        android:layout_marginTop="10dp"
+        android:id="@+id/defineButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/defineButton"
-        android:layout_below="@+id/bottom_container"/>
+        android:layout_below="@+id/bottom_container"
+        android:layout_marginTop="10dp"
+        android:text="登録" />
 </RelativeLayout>
