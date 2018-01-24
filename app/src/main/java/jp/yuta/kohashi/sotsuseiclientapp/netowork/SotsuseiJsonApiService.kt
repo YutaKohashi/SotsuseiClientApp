@@ -1,10 +1,11 @@
 package jp.yuta.kohashi.sotsuseiclientapp.netowork
 
+import android.text.TextUtils
+import android.util.Log
 import io.reactivex.Observable
-
 import jp.yuta.kohashi.sotsuseiclientapp.netowork.model.Model
+import jp.yuta.kohashi.sotsuseiclientapp.utils.PrefUtil
 import okhttp3.Interceptor
-import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,6 +13,10 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import java.net.Inet4Address
+import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.net.Proxy
 
 
 /**
@@ -23,52 +28,48 @@ interface SotsuseiJsonApiService {
 
     //　ログイン
     // 店舗ログイン
-    @POST("/api/v1/store/login")
-    fun postStoreLogin(@Body sId: String, @Body password: String): Observable<Model.Result>
-
-    // 従業員ログイン
-    @POST("/api/v1/employee/login")
-    fun postEmployeeLogin(@Body sId: String, @Body password: String): Observable<Model.Result>
-
-    // ログアウト
-    @GET("/api/v1/logout")
-    fun getLogout(): Observable<Model.Result>
+    @Multipart
+    @POST("/api/v1/store/createtoken")
+    fun postStoreCreateToken(@Part("sid") sId: RequestBody, @Part("password") password: RequestBody): Observable<Model.TokenResponse>
 
     @Multipart
-    @POST("/api/v1/image")
-    fun postImage(@Part image: MultipartBody.Part, @Part("imageId") storeId: RequestBody): Observable<Model.Result>
+    @POST("/api/v1/employee/createtoken")
+    fun postEmpCreateToken(@Part("sid ") sId: RequestBody, @Part("eid") eId: RequestBody, @Part("password") password: RequestBody): Observable<Model.TokenResponse>
 
-    @POST("")
-    fun postCaptureImage(@Body sId:String)
+    @Multipart
+    @POST("/api/v1/store/verifytoken")
+    fun postStoreVerifyToken(@Part("sid") sId: RequestBody, @Part("token") token: RequestBody): Observable<Model.DefaultResponse>
 
-    @GET("/logout")
-    fun getLogout(@Body sid:String)
+    @Multipart
+    @POST("/api/v1/employee/verifytoken")
+    fun postEmpVerifyToken(@Part("sid") sid: RequestBody, @Part("eid") eid: RequestBody, @Part("token") token: RequestBody): Observable<Model.DefaultResponse>
+
+    @Multipart
+    @POST("/api/v1/revocationtoken")
+    fun postRevocationToken(@Part("token") token: RequestBody): Observable<Model.DefaultResponse>
 
     // 従業員情報取得
-    @POST("/api/v1/employee/info")
-    fun postEmployeeInfo(@Body eid:Int): Observable<Model.Employee>
+    @GET("/api/v1/employee/info/{eid}/")
+    fun getEmpInfo(@Path("eid") eid: String): Observable<Model.Employee>
 
+    // 店舗情報の取得
+    @GET("/api/v1/store/info/{sid}/")
+    fun getStoreInfo(@Path("sid") storeId: String): Observable<Model.StoreInfo>
+
+    @Multipart
     // ナンバープレート登録
     @POST("/api/v1/numberplate")
-    fun postNumberPlate(@Body sid:Int, @Body humanid:String,@Body imageid:String,@Body shiyohonkyochi:String,@Body bunruibango:String,@Body jigyoyohanbetsumoji:String,@Body ichirenshiteibango:String,@Body cartype:Int,@Body colortype:Int,@Body makertype:Int, @Body comment:String, @Body datetime:String):Observable<Model.NumberPlate>
+    fun postNumberPlate(@Part("eid") eid: RequestBody,@Part("sid") sid: RequestBody, @Part("shiyohonkyochi") shiyohonkyochi: RequestBody, @Part("bunruibango") bunruibango: RequestBody, @Part("jigyoyohanbetsumoji") jigyoyohanbetsumoji: RequestBody, @Part("ichirenshiteibango") ichirenshiteibango: RequestBody, @Part("cartype") cartype: RequestBody, @Part("colortype") colortype: RequestBody, @Part("makertype") makertype: RequestBody, @Part("comment") comment: RequestBody): Observable<Model.DefaultResponse>
 
-
-
-//
-//    @POST("/login/")
-//    fun postLogin(@Body fileName: String): Observable<Model.Result>
-//
-//    @GET("")
-//    fun postImage(@Body fileName: String): Observable<Model.Result>
-//
-//
-//    @Multipart
-//    @POST("/")
-//    fun postImage(@Part image: MultipartBody.Part): Observable<Model.Result>
+    @Multipart
+    @POST("/api/v1/shutter")
+    fun postShutter(@Part("sid") sid: RequestBody, @Part("eid") eid: RequestBody): Observable<Model.DefaultResponse>
 
     companion object {
 
-        private val BASE_URL = "http://172.22.124.132:8000"
+        val PORT = if(PrefUtil.debug && !TextUtils.isEmpty(PrefUtil.debugServerPort)) ":" + PrefUtil.debugServerPort else ""
+        private val DOMAIN = if (PrefUtil.debug) PrefUtil.debugServerIp else "59.106.217.144"
+        private var BASE_URL = "http://" + DOMAIN + PORT
 
         fun create(): SotsuseiJsonApiService {
 
@@ -83,6 +84,13 @@ interface SotsuseiJsonApiService {
             val client = OkHttpClient.Builder().apply {
                 addInterceptor(interceptor)
                 addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
+                if(PrefUtil.debug && PrefUtil.debugProxy){
+                    proxy( Proxy(Proxy.Type.HTTP, InetSocketAddress.createUnresolved("proxy.ecc.ac.jp", 8080)))
+                    Log.d("SotsuseiJsonApiService","enable proxy")
+                }
+//                connectTimeout(1000, TimeUnit.MILLISECONDS)
+//                readTimeout(1000, TimeUnit.MILLISECONDS)
+//                writeTimeout(1000, TimeUnit.MILLISECONDS)
             }.build()
 
             return Retrofit.Builder()

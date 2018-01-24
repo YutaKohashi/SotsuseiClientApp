@@ -3,7 +3,6 @@ package jp.yuta.kohashi.sotsuseiclientapp.ui.illegalparking
 import android.app.Activity
 import android.support.v4.app.Fragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseActivity
-import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseToolbarActivity
 import jp.yuta.kohashi.sotsuseiclientapp.ui.StartActivity
 
 /**

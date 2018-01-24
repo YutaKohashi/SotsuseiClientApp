@@ -8,8 +8,6 @@ import android.widget.FrameLayout
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.view.CameraView
-import jp.yuta.kohashi.sotsuseiclientapp.utils.DisplayUtil
-import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 import kotlinx.android.synthetic.main.fragment_illegal_parking.*
 
 /**

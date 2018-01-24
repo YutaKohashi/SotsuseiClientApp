@@ -8,6 +8,7 @@
 
 
     <LinearLayout
+        android:visibility="invisible"
         android:layout_marginBottom="30dp"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/stopButton"

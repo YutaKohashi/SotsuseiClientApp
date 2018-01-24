@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.annotation.ColorRes
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,5 +66,6 @@ abstract class BaseFragment : Fragment() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ResUtil.color(color)
     }
+
 
 }

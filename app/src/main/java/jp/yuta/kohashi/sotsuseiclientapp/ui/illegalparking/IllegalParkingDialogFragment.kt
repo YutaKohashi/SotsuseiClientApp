@@ -1,8 +1,8 @@
 package jp.yuta.kohashi.sotsuseiclientapp.ui.illegalparking
 
 import android.content.Context
-import android.hardware.camera2.CameraCaptureSession
 import android.os.Bundle
+import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
 import android.util.Log
 import android.view.View
@@ -10,11 +10,9 @@ import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.netowork.model.Model
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseDialogFragment
 import jp.yuta.kohashi.sotsuseiclientapp.ui.BaseFragment
-import jp.yuta.kohashi.sotsuseiclientapp.ui.view.CameraView
-import jp.yuta.kohashi.sotsuseiclientapp.ui.view.NumberPlateView
+import jp.yuta.kohashi.sotsuseiclientapp.utils.PrefUtil
 import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 import kotlinx.android.synthetic.main.diag_fragment_illefalparking_01.*
-import okhttp3.internal.Util
 import java.util.*
 
 
@@ -38,26 +36,15 @@ class IllegalParkingDialogFragment : BaseDialogFragment(), View.OnClickListener 
             add(R.id.container01) // 白
             add(R.id.container02) // 黄色
             add(R.id.container03) // 緑
-            add(R.id.container04)
+            add(R.id.container04) //　黒
             add(R.id.container05)
         }
     }
 
-    /**
-     * ナンバプレートのカラー・タイプ
-     */
-    enum class ColorType {
-        DEFAULT,
-        YELLOW,
-        GREEN,
-        BLUE,
-        BLACK
-    }
-
-    data class NumberPlate(val shiyohonkyochi: String, val bunruibango: String, val jigyoyohanbetsumoji: String, val ichirenshiteibango: String, val cartype: Int, val colortype: Int, val makertype: Int, val comment: String, val datetime: String)
+//    data class NumberPlate(val shiyohonkyochi: String, val bunruibango: String, val jigyoyohanbetsumoji: String, val ichirenshiteibango: String, val cartype: Int, val colortype: Int, val makertype: Int, val comment: String, val datetime: String)
 
     interface Callback : BaseCallback {
-        fun onPositive(numberPlate: NumberPlate)
+        fun onPositive(numberPlate: Model.NumberPlate)
         fun onCancel()
     }
 
@@ -81,20 +68,27 @@ class IllegalParkingDialogFragment : BaseDialogFragment(), View.OnClickListener 
         closeButton.setOnClickListener { dismiss() }
 
         // 決定ボタン
+        // TODO cartype と makertypeを指定していない
+        // humanid, imageid,は後の機能としておいておく
         defineButton.setOnClickListener {
-            val numberPlate = NumberPlate(
-                    "",
-                    "",
-                    "",
-                    "",
-                    0,
-                    0,
-                    0,
-                    "",
-                    Date().time.toString() // 現在時刻を設定
-
-            )
-            mCallback?.onPositive(numberPlate)
+            numberPlateView.number?.let { number ->
+                val numberPlate = Model.NumberPlate(
+                        PrefUtil.empId,
+                        PrefUtil.storeId,
+                        "",
+                        "",
+                        numberPlateView.honkyochi,
+                        numberPlateView.bunruiNum,
+                        numberPlateView.hanbetsuMoji,
+                        number,
+                        0,
+                        selectedColorType(),
+                        0,
+                        "",
+                        Date() // 現在時刻を設定
+                )
+                mCallback?.onPositive(numberPlate)
+            } ?:mCallback?.onCancel()
             dismiss()
         }
     }
@@ -129,10 +123,18 @@ class IllegalParkingDialogFragment : BaseDialogFragment(), View.OnClickListener 
 
     }
 
+    @IdRes
+    private var selectedView:Int? = null
+
+    private fun selectedColorType():Int{
+        return selectedView?.let { mColorContainerIds.indexOf(it) } ?:0
+    }
+
     /**
      * click color view
      */
     override fun onClick(v: View?) {
+        selectedView = v?.id
         v?.setBackgroundColor(ResUtil.color(android.R.color.black))
 
         // 押下されたボタン以外の背景を初期化

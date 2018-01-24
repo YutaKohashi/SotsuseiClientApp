@@ -4,16 +4,17 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.annotation.ColorRes
 import android.support.annotation.LayoutRes
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.Toolbar
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.utils.ResUtil
 
@@ -62,8 +63,8 @@ abstract class BaseActivity : AppCompatActivity() {
      */
     protected var isEvent: Boolean = true
 
-    inline fun<reified T:Activity> Fragment.activityStart(bundle: Bundle? = null){
-        val intent = Intent(activity, T::class.java)
+    protected inline fun<reified T:Activity> Activity.activityStart(bundle: Bundle? = null){
+        val intent = Intent(this, T::class.java)
         bundle?.let { intent.putExtras(it) }
         startActivity(intent)
     }
@@ -100,19 +101,20 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     open fun replaceFragment(fragment: Fragment) {
-        if (mRootView == null) return
+        if (mFragmentContainer == null) return
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
-        transaction.replace(mRootView!!.id, fragment)
+        transaction.replace(mFragmentContainer!!.id, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
 
+
     open fun addFragment(fragment: Fragment) {
-        if (mRootView == null) return
+        if (mFragmentContainer == null) return
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
-        transaction.add(mRootView!!.id, fragment)
+        transaction.add(mFragmentContainer!!.id, fragment)
         transaction.commit()
     }
 
@@ -165,5 +167,16 @@ abstract class BaseActivity : AppCompatActivity() {
         window.statusBarColor = ResUtil.color(R.color.colorPrimaryDark)
     }
 
+    fun showSnackBar(text:String){
+        contentViewFromView?.let {  Snackbar.make(it,text,Snackbar.LENGTH_SHORT).show()}?:
+        mRootView?.let { Snackbar.make(it,text,Snackbar.LENGTH_SHORT).show() }?:
+                findViewById<View>(android.R.id.content)?.let { Snackbar.make(it,text,Snackbar.LENGTH_SHORT).show() }
+    }
+
+    fun showSnackBar(text:String,startTime:Long){
+        Handler(Looper.getMainLooper()).postDelayed({
+            showSnackBar(text)
+        }, startTime)
+    }
 
 }

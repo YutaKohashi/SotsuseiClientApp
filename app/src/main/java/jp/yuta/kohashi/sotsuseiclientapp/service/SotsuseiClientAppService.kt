@@ -10,7 +10,12 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
 import android.widget.Toast
+import jp.yuta.kohashi.sotsuseiclientapp.netowork.SotsuseiApiHelper
+import jp.yuta.kohashi.sotsuseiclientapp.netowork.exception.ApiException
+import jp.yuta.kohashi.sotsuseiclientapp.netowork.model.Model
 import jp.yuta.kohashi.sotsuseiclientapp.receiver.MediaControlReceiver
+import jp.yuta.kohashi.sotsuseiclientapp.utils.NetworkUtil
+import jp.yuta.kohashi.sotsuseiclientapp.utils.PrefUtil
 
 
 /**
@@ -27,15 +32,17 @@ class SotsuseiClientAppService : BaseService() {
     private var mTmpRingMode: Int = AudioManager.RINGER_MODE_NORMAL
 
 
+    private var firstFlg = true
     /**
      * broadcastreceiverのイベント処理
      */
     private var invokeFlg = true
     private val invokeAction: () -> Unit = {
         mAudioManager?.setStreamVolume(AudioManager.STREAM_MUSIC, if (mTmpVolumeLevel == 0) 1 else mTmpVolumeLevel, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
-        if (invokeFlg) {
+        if (!firstFlg && invokeFlg) {
             Log.d(TAG, "invokeAction")
-            Toast.makeText(applicationContext, "invokeAction", Toast.LENGTH_SHORT).show()
+
+            invokeShutterAction()
             invokeFlg = false
             val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             if (Build.VERSION.SDK_INT >= 26) {
@@ -46,7 +53,29 @@ class SotsuseiClientAppService : BaseService() {
             Handler().postDelayed({
                 invokeFlg = true
             }, 3000L)
+        }else if(firstFlg){
+            firstFlg = false
         }
+    }
+
+    private fun invokeShutterAction(){
+        if(!NetworkUtil.isConnectNetwork()) {
+            Toast.makeText(applicationContext, "network is not connected", Toast.LENGTH_SHORT).show()
+            return
+        }
+        SotsuseiApiHelper.postShutter(PrefUtil.storeId, PrefUtil.empId,
+                object : SotsuseiApiHelper.Callback<Model.DefaultResponse>{
+                    override fun onFailure(e: ApiException) {
+                        Toast.makeText(applicationContext, "error", Toast.LENGTH_SHORT).show()
+                    }
+                    override fun onSuccess(body: Model.DefaultResponse?) {
+                        if(body != null){
+                            Toast.makeText(applicationContext, "success", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(applicationContext, "error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
     }
 
     companion object : ServiceExtension<SotsuseiClientAppService> {

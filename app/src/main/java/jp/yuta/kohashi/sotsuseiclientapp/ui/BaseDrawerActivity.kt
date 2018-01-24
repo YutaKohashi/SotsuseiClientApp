@@ -2,7 +2,6 @@ package jp.yuta.kohashi.sotsuseiclientapp.ui
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.annotation.MenuRes
@@ -10,6 +9,7 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -25,7 +25,7 @@ import jp.yuta.kohashi.sotsuseiclientapp.utils.Util
  * Project name : SotsuseiClientApp
  * Date : 30 / 10 / 2017
  */
-abstract class BaseDrawerActivity : BaseActivity() {
+abstract class BaseDrawerActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListener {
     private val TAG = BaseDrawerActivity::class.java.simpleName
 
     /**
@@ -79,6 +79,13 @@ abstract class BaseDrawerActivity : BaseActivity() {
      */
     override val contentViewFromView: View? by lazy { createContentView() }
 
+//    inline fun<reified T: Activity> Fragment.activityStart(bundle: Bundle? = null){
+//        val intent = Intent(activity, T::class.java)
+//        bundle?.let { intent.putExtras(it) }
+//        startActivity(intent)
+//    }
+
+
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         onCreate(savedInstanceState, false)
@@ -128,6 +135,8 @@ abstract class BaseDrawerActivity : BaseActivity() {
             menuItemFromRes?.let { inflateMenu(it) }
 
         }
+
+        navigationView.setNavigationItemSelectedListener(this)
 
         mDrawerLayout.addView(mContainerView)
         mDrawerLayout.addView(navigationView)
@@ -208,4 +217,9 @@ abstract class BaseDrawerActivity : BaseActivity() {
             else super.onBackPressed()
         } ?:super.onBackPressed()
     }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return true
+    }
 }
+
