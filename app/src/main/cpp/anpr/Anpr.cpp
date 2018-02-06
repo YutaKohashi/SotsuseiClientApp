@@ -4,7 +4,7 @@
 
 #include "Anpr.h"
 
-string getFilename(string s) {
+string Anpr::getFilename(string s) {
 
     char sep = '/';
     char sepExt = '.';
@@ -28,13 +28,13 @@ string getFilename(string s) {
 }
 
 template<typename T>
-string tostr(const T &t) {
+string Anpr::tostr(const T &t) {
     ostringstream os;
     os << t;
     return os.str();
 }
 
-string anpr(char *filepath) {
+string Anpr::anpr(char *filepath) {
     Mat input_image;
 
     input_image = imread(filepath, CV_LOAD_IMAGE_COLOR);
@@ -97,16 +97,7 @@ string anpr(char *filepath) {
 
 }
 
-string anpr() {
+string Anpr::anpr() {
     char *targetFilePath = (char *) "/data/data/jp.yuta.kohashi.sotsuseiclientapp/files/testimg.jpg";
     return anpr(targetFilePath);
-}
-
-extern "C" JNIEXPORT jstring
-
-JNICALL
-Java_jp_yuta_kohashi_sotsuseiclientapp_ui_illegalparking_AnprManager_anpr(JNIEnv *env,
-                                                                          jobject /* this */) {
-    string result = anpr();
-    return env->NewStringUTF(result.c_str());
 }

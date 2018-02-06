@@ -30,6 +30,8 @@ public:
 
 private:
     string getFilename(string s);
+    template<typename T>
+    string tostr(const T &t);
 };
 
 

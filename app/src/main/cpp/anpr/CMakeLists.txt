@@ -14,6 +14,7 @@ ENDIF()
 set(PKG_CONFIG_PATH ${PKG_CONFIG_PATH}　../../../../opencv2411/sdk/native/jni)
 
 SET(SRC
+ JniManager.cpp
  Anpr.cpp
  DetectRegions.cpp
  OCR.cpp
