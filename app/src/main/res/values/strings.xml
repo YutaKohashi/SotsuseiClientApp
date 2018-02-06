@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SotsuseiClientApp</string>
+    <string name="app_name">watch!i-従業員</string>
 
     <string name="already_running_servce">実行中です</string>
     <string name="success_runnning_service">開始しました</string>
