@@ -11,7 +11,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import jp.yuta.kohashi.sotsuseiclientapp.R
 import jp.yuta.kohashi.sotsuseiclientapp.ui.login.LoginActivity
-
+import java.security.SecureRandom
 
 /**
  * Author : yutakohashi
@@ -21,6 +21,9 @@ import jp.yuta.kohashi.sotsuseiclientapp.ui.login.LoginActivity
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     private val TAG = MyFirebaseMessagingService::class.java.simpleName
 
+    companion object {
+        private var notifyId = 0
+    }
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
         Log.d(TAG, "onMessageReceived")
@@ -47,6 +50,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+
     /**
      * 通知を表示するメソッド
      */
@@ -66,6 +70,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setContentIntent(pendingIntent)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        notificationManager.notify(notifyId, notificationBuilder.build())
+        notifyId += 1
     }
 }
